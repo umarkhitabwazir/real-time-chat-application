@@ -1,0 +1,52 @@
+"use client";
+import React, { useEffect } from 'react'
+import { User } from '../interfaces/user.interface'
+import axios, { AxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
+
+
+interface AuthProps {
+    user:User
+}
+const Auth =  <P extends AuthProps>(
+    WrappedComponent: React.ComponentType<P>
+) =>{
+    
+const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
+    const API = process.env.NEXT_PUBLIC_API_URL
+    const router = useRouter();
+    const [user, setUser] = React.useState<User | null>(null)
+    
+    useEffect(() => {
+        const fetchLoggedInUser = async () => {
+            try {
+                const response = await axios.get(`${API}/logged-in-user`, { withCredentials: true });
+                const data = response.data.data;
+                setUser(data);
+            } catch (error:unknown) {
+                if (error instanceof AxiosError) {
+                    if (error.response?.data.error==="Invalid token") {
+                     return   router.push('/login');
+                        
+                    }
+                    
+                }
+            }
+        }
+        fetchLoggedInUser();
+    },[])
+    if (!user) {
+        return (
+            <div className="bg-gray-50 flex flex-col items-center justify-center min-h-screen">
+              <h5 className='text-black font-medium text-lg'>Loading...</h5>
+            </div>
+        )
+        
+    }
+
+    return <WrappedComponent {...(prop as P )} user={user} />
+}
+return AuthenticatedComponent
+}
+
+export default Auth
