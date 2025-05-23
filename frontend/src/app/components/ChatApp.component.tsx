@@ -43,7 +43,6 @@ const ChatApp = ({ user }: { user: User }) => {
         const other = msg.sender.username === user.username
           ? msg.receiver.username
           : msg.sender.username;
-        console.log('other', other);
         // Initialize the array if needed
         if (!grouped[other]) grouped[other] = [];
         grouped[other].push(msg);
@@ -72,7 +71,7 @@ const ChatApp = ({ user }: { user: User }) => {
 
   useEffect(() => {
     fetchMessages();
-  }, [API, user._id]);
+  }, [API, user,router]);
 
   // Handle sending a message
   const handleSend = async () => {

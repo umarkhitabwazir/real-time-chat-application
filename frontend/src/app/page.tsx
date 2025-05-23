@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import AddUserComponent from './components/AddUser.component'
 
 
-const page = () => {
+const HomePage = () => {
   const [showAddUser, setShowAddUser] = useState(false);
   return (
     <div className='flex flex-col items-center justify-center h-screen'>
@@ -28,4 +28,4 @@ const page = () => {
   )
 }
 
-export default page
+export default HomePage
