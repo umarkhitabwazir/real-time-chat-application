@@ -16,7 +16,7 @@ interface Message {
 
 
 // Our ChatApp component
-const ChatApp = ({ user }: { user: User }) => {
+const ChatApp:React.FC<User> = ( { user }) => {
   // const [selectedUser, setSelectedUser] = useState<string>('');
   const [messageText, setMessageText] = useState('');
   const [conversations, setConversations] = useState<Record<string, Message[]>>({});

@@ -1,5 +1,5 @@
 export interface User {
-    _id: string;
+   user:{ _id: string;
   username: string;
   email: string;
   password: string;
@@ -7,7 +7,7 @@ export interface User {
   refreshToken?: string;
   status?: 'online' | 'offline' | 'away';
   lastSeen?: Date;
-  socketId?: string;
+  socketId?: string;}
 }
 
 

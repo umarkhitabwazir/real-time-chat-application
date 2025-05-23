@@ -2,10 +2,17 @@ import React from 'react'
 import ChatAppComponent from '../components/ChatApp.component'
 import { User } from '../interfaces/user.interface'
 
-const chat = ({user}:{user:User}) => {
+const chat = () => {
   return (
     <div>
-      <ChatAppComponent user={user}/>
+      <ChatAppComponent user={{
+        _id: '',
+        username: '',
+        email: '',
+        password: '',
+        avatar: '',
+
+      }} />
     </div>
   )
 }

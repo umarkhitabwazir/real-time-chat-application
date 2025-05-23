@@ -5,10 +5,8 @@ import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 
 
-interface AuthProps {
-    user:User
-}
-const Auth =  <P extends AuthProps>(
+
+const Auth =  <P extends User>(
     WrappedComponent: React.ComponentType<P>
 ) =>{
     
