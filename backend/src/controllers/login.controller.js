@@ -2,6 +2,10 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
+import dotenv from "dotenv";
+dotenv.config({
+    path:".env"
+});
 
 const generateAccessAndRefereshTokens = async (user) => {
     try {
@@ -37,6 +41,8 @@ const longinUser = asyncHandler(async (req, res) => {
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user);
+    console.log("node-env", process.env.NODE_ENV);
+    
 const options={
             httpOnly: true,
             sameSite: process.env.NODE_ENV === "production" ? "None" : "lax",
