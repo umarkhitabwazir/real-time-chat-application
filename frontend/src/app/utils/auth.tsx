@@ -24,7 +24,7 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
             } catch (error:unknown) {
                 if (error instanceof AxiosError) {
                     if (error.response?.data.error==="Invalid token") {
-                     return   router.push('/login');
+                     return   router.push('/api/login');
                         
                     }
                     

@@ -14,7 +14,7 @@ const Header = () => {
                 <Link  href="/" className="hover:text-gray-400">Home</Link>
                 <Link href="/about" className="hover:text-gray-400">About</Link>
                 <Link href="/chat" className="hover:text-gray-400">Chat</Link>
-                <Link href="/login" className="hover:text-gray-400">Login</Link>
+                <Link href="/api/login" className="hover:text-gray-400">Login</Link>
                 <Link href="/register" className="hover:text-gray-400">Register</Link>
             </div>
 
@@ -34,7 +34,7 @@ const Header = () => {
                             <li><Link href="/" className="hover:text-gray-400">Home</Link></li>
                             <li><Link href="/about" className="hover:text-gray-400">About</Link></li>
                             <li><Link href="/chat" className="hover:text-gray-400">Chat</Link></li>
-                            <li><Link href="/login" className="hover:text-gray-400">Login</Link></li>
+                            <li><Link href="/api/login" className="hover:text-gray-400">Login</Link></li>
                             <li><Link href="/register" className="hover:text-gray-400">Register</Link></li>
                         </ul>
                     </div>
