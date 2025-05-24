@@ -41,8 +41,10 @@ const longinUser = asyncHandler(async (req, res) => {
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user);
-    console.log("node-env", process.env.NODE_ENV === "production" ? "None" : "lax");
-    console.log("secure", process.env.NODE_ENV === "production");
+    const isProduction = process.env.NODE_ENV === "production";
+    console.log("sameSite", isProduction? "None" : "lax");
+    console.log("secure", isProduction? true : false);
+  
     
 const options={
             httpOnly: true,
