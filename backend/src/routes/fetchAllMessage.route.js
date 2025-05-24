@@ -5,4 +5,4 @@ import fetchAllMessagesController from '../controllers/fetchAllMessages.controll
 const fetchAllMessageRoute = express.Router();
 
 fetchAllMessageRoute.route('/fetch-all-message').get(middleWare,fetchAllMessagesController);
-export default fetchAllMessageRoute;zzzzzzzz
+export default fetchAllMessageRoute;
