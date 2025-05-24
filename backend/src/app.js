@@ -9,7 +9,7 @@ import fetchAllMessageRoute from "./routes/fetchAllMessage.route.js"
 import getLoggedInUserRoute from "./routes/getLoggedinUser.route.js"
 import checkUserRoute from "./routes/checkUser.route.js"
 
-
+console.log("process.env.origin", process.env.origin);
 const app = express()
 app.use(cookieParser())
 app.use(express.json())
