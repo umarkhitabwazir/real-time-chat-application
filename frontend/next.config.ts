@@ -1,19 +1,14 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  
-};
-module.exports={
-  async rewrites(){
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  async rewrites() {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*` // Proxy to Backend
-      }
-    ]
-  }
-}
-module.exports = nextConfig;
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`, // fix path as well if needed
+      },
+    ];
+  },
+};
 
-export default nextConfig;
+module.exports = nextConfig;
