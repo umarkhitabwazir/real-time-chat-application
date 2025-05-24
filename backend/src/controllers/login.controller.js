@@ -4,7 +4,7 @@ import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import dotenv from "dotenv";
 dotenv.config({
-    path:".env"
+    path: ".env"
 });
 
 const generateAccessAndRefereshTokens = async (user) => {
@@ -42,21 +42,22 @@ const longinUser = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user);
     const isProduction = process.env.NODE_ENV === "production";
-    console.log("sameSite", isProduction? "None" : "lax");
-    console.log("secure", isProduction? true : false);
-  
-    
-const options={
-            httpOnly: true,
-            // sameSite: process.env.NODE_ENV === "production" ? "None" : "lax",
-            sameSite: "None" ,
-            // secure: process.env.NODE_ENV === "production",
-            secure: true,
+    console.log("sameSite", isProduction ? "None" : "lax");
+    console.log("secure", isProduction ? true : false);
 
-        }
+
+    const options = {
+        httpOnly: true,
+        // sameSite: process.env.NODE_ENV === "production" ? "None" : "lax",
+        sameSite: "None",
+        // secure: process.env.NODE_ENV === "production",
+        secure: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+
+    }
     res.
-        cookie("refreshToken", refreshToken,options ).
-        cookie("accessToken", accessToken,options).
+        cookie("refreshToken", refreshToken, options).
+        cookie("accessToken", accessToken, options).
         status(200).json(new ApiResponse(200, user));
 })
 
