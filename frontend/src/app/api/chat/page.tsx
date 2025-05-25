@@ -1,5 +1,5 @@
 import React from 'react'
-import ChatAppComponent from '../components/ChatApp.component'
+import ChatAppComponent from '@/app/components/ChatApp.component'
 
 const chat = () => {
   return (

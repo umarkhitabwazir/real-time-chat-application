@@ -61,7 +61,7 @@ const ChatApp:React.FC<User> = ( { user }) => {
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response?.data.error === 'Invalid token') {
         alert('Session expired, please login again');
-        router.push('/login');
+        router.push('/api/login');
       } else {
         console.error(err);
         setError('Failed to fetch messages.');

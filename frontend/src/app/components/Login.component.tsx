@@ -30,7 +30,7 @@ const LoginComponent = () => {
             }, { withCredentials: true })
             console.log(response.data)
             setLoading(false)
-            router.push('/chat')
+            router.push('/api/chat')
 
         } catch (err: unknown) {
             if (err instanceof AxiosError) {
