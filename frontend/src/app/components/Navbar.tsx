@@ -16,6 +16,7 @@ const Header = () => {
                 <Link href="/api/chat" className="hover:text-gray-400">Chat</Link>
                 <Link href="/api/login" className="hover:text-gray-400">Login</Link>
                 <Link href="/api/register" className="hover:text-gray-400">Register</Link>
+                <Link href="https://github.com/umarkhitabwazir/real-time-chat-application" className="hover:text-gray-400">source code</Link>
             </div>
 
             {/* Mobile Menu Button */}
