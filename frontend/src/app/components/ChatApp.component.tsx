@@ -106,7 +106,7 @@ const ChatApp:React.FC<User> = ( { user }) => {
       setLoading(false);
       if (err instanceof AxiosError && err.response?.data.error === 'Invalid token') {
         alert('Session expired, please login again');
-        router.push('/login');
+        router.push('/api/login');
       } else if (err instanceof AxiosError) {
         setError(err.response?.data.error || 'Send failed');
       } else {
@@ -146,7 +146,7 @@ const ChatApp:React.FC<User> = ( { user }) => {
                   setError('');
                   setMessageText('');
                   // setSelectedUser(name)
-                  router.push(`/chat?user=${name}`);
+                  router.push(`/api/chat?user=${name}`);
                 }}
               >
                 {name}
