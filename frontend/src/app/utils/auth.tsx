@@ -30,6 +30,7 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
                 setUser(data);
             } catch (error:unknown) {
                 if (error instanceof AxiosError) {
+                    console.log("Error fetching logged in user:", error.response?.data);
                     if (error.response?.data.error==="Invalid token") {
                      return   router.push('/api/login');
                         
@@ -40,14 +41,14 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
         }
         fetchLoggedInUser();
     },[])
-    // if (!user) {
-    //     return (
-    //         <div className="bg-gray-50 flex flex-col items-center justify-center min-h-screen">
-    //           <h5 className='text-black font-medium text-lg'>Loading...</h5>
-    //         </div>
-    //     )
+    if (!user) {
+        return (
+            <div className="bg-gray-50 flex flex-col items-center justify-center min-h-screen">
+              <h5 className='text-black font-medium text-lg'>Loading...</h5>
+            </div>
+        )
         
-    // }
+    }
 
     return <WrappedComponent {...(prop as P )} user={user} />
 }
