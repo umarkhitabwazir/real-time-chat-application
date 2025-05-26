@@ -12,11 +12,11 @@ const Header = () => {
             {/* Desktop Menu */}
             <div className="hidden sm:flex space-x-4">
                 <Link  href="/" className="hover:text-gray-400">Home</Link>
-                <Link href="/api/about" className="hover:text-gray-400">About</Link>
                 <Link href="/api/chat" className="hover:text-gray-400">Chat</Link>
+                <Link href="/api/about" className="hover:text-gray-400">About</Link>
+                <Link href="https://github.com/umarkhitabwazir/real-time-chat-application" className="hover:text-gray-400">source code</Link>
                 <Link href="/api/login" className="hover:text-gray-400">Login</Link>
                 <Link href="/api/register" className="hover:text-gray-400">Register</Link>
-                <Link href="https://github.com/umarkhitabwazir/real-time-chat-application" className="hover:text-gray-400">source code</Link>
             </div>
 
             {/* Mobile Menu Button */}

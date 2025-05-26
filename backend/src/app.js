@@ -19,7 +19,7 @@ app.use(cors({
     credentials: true,
 }))
 
-app.use("/api/v2",
+app.use("/api",
     signUp,
     login,
     sendmessage,
