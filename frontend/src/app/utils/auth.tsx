@@ -40,14 +40,14 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
         }
         fetchLoggedInUser();
     },[])
-{/*     if (!user) {
+    if (!user) {
         return (
             <div className="bg-gray-50 flex flex-col items-center justify-center min-h-screen">
               <h5 className='text-black font-medium text-lg'>Loading...</h5>
             </div>
         )
         
-    } */}
+    }
 
     return <WrappedComponent {...(prop as P )} user={user} />
 }
