@@ -20,7 +20,13 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
             try {
                 const response = await axios.get(`${API}/logged-in-user`, { withCredentials: true });
                 const data = response.data.data;
+
                 console.log("Logged in user data:", data);
+
+      if (!data) {
+        return router.push('/api/login');
+      }
+
                 setUser(data);
             } catch (error:unknown) {
                 if (error instanceof AxiosError) {
