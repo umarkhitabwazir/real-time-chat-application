@@ -5,7 +5,7 @@ const nextConfig: import('next').NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`, // fix path as well if needed
+        destination: `${process.env.FRONTEND_URL}/api/:path*`, // fix path as well if needed
       },
     ];
   },
