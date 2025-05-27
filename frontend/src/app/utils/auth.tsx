@@ -14,9 +14,7 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
     const API = process.env.NEXT_PUBLIC_API_URL
     const router = useRouter();
     const [user, setUser] = React.useState<User | null>(null)
-    
-    useEffect(() => {
-        const fetchLoggedInUser = async () => {
+     const fetchLoggedInUser = async () => {
             try {
                 const response = await axios.get(`${API}/logged-in-user`, { withCredentials: true });
                 const data = response.data.data;
@@ -39,6 +37,8 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
                 }
             }
         }
+    useEffect(() => {
+       
         fetchLoggedInUser();
     },[])
     if (!user) {

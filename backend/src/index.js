@@ -2,12 +2,32 @@ import { app } from "./app.js"
 import dotenv from "dotenv"
 import { dbConnect } from "./db/db.js"
 import { ApiError } from "./utils/api-error.js"
+import { createServer } from "http"
+import {Server} from "socket.io"
+import cors from "cors"
 
 dotenv.config({
     path:".env"
 })
 const port=process.env.PORT
+const httpServer = createServer(app)
+const io=new Server(httpServer,cors({
+    origin: process.env.origin,
+    credentials: true,
+}));   
 
+io.on("connection", (socket) => {
+  
+  socket.on("message", (message) => {
+    console.log("Received message from frontend:", message);
+    io.emit("backend-message", message);
+     socket.broadcast.emit('message', message);
+  })
+  socket.on('typing', (data) => {
+    console.log("User is typing:", data);
+    socket.broadcast.emit('typing', data);
+  });
+});
 
 app.get('/', (req, res) => {
   res.send(`
@@ -39,7 +59,7 @@ app.get('/', (req, res) => {
 
 dbConnect().then(()=>{
 
-app.listen(port,()=>{
+httpServer.listen(port,()=>{
     console.log(`app listing on ${port}`)
 })
 }

@@ -22,8 +22,7 @@ const fetchAllMessagesController = asyncHandler(async (req, res) => {
         ],
     })
         .populate("sender", "username avatar")
-        .populate("receiver", "username avatar")
-        .sort({ createdAt: -1 });
+        .populate("receiver", "username avatar") ;
     if (!allMessages) {
         throw new ApiError(404, "No messages found");
     }

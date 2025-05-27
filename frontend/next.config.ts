@@ -1,6 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig: import('next').NextConfig = {
   reactStrictMode: true,
+   images: {
+  remotePatterns:[
+    {
+      protocol: 'http',
+      hostname: 'res.cloudinary.com',
+      port: '',
+      pathname: '/dl5t2l1sc/image/upload/**',
+      search: '',
+    },
+  ]
+  },
   async rewrites() {
     return [
       {
