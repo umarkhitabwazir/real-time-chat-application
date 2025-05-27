@@ -111,7 +111,10 @@ const ChatApp: React.FC<User> = ({ user }) => {
   }, [typing, user.username]);
   useEffect(() => {
     initiateSocket(API.replace(/\/api\/?$/, ''));
-      subscribeToMessages((msg: Message) => {
+      
+  },[API, user.username]);
+  useEffect(() => {
+    subscribeToMessages((msg: Message) => {
         const other = msg.sender.username === user.username
           ? msg.receiver.username
           : msg.sender.username;
