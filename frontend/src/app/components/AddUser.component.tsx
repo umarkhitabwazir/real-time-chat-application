@@ -25,7 +25,7 @@ const AddUserComponent = ({ setShowAddUser }: { setShowAddUser: Dispatch<SetStat
             await axios.get(`${API}/check-user/${user}`);
             setLoading(false);
             setShowAddUser(false);
-            router.push(`/chat?user=${user}`);
+            router.push(`/api/chat?user=${user}`);
 
         } catch (error) {
             if (error instanceof AxiosError && error.response?.data.status === 404) {
