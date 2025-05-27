@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import AddUserComponent from './AddUser.component';
 import io from 'socket.io-client';
 import Image from 'next/image';
-
+import { Socket } from 'socket.io-client';
 // Define a type for individual chat messages
 interface Message {
   sender: { username: string, avatar?: string };
@@ -18,11 +18,11 @@ interface Message {
 
 }
 
-let socket: any = null;
+let socket:typeof Socket = null!;
 
 
 
-export const initiateSocket = (url: any) => {
+export const initiateSocket = (url: string) => {
   socket = io(url, {
     transports: ["websocket"],
 
@@ -33,7 +33,7 @@ export const initiateSocket = (url: any) => {
     console.log("✅ Socket connected:", socket.id);
   });
 
-  socket.on("connect_error", (err: any) => {
+  socket.on("connect_error", (err:Error ) => {
     console.error("❌ Socket connection error:", err);
   });
 };
