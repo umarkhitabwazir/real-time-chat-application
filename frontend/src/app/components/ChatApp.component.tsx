@@ -97,19 +97,22 @@ const ChatApp: React.FC<User> = ({ user }) => {
 
 
   useEffect(() => {
+if (socket){
 
-    socket?.on('typing', (data: { sender: string, receiver: string }) => {
-      console.log("Typing event received:", data);
-      if (data.receiver === user.username) {
-        setTyping(`${data.sender}${' '}is typing...`);
-      }
-    })
+  socket?.on('typing', (data: { sender: string, receiver: string }) => {
+    console.log("Typing event received:", data || "No data");
+    if (data.receiver === user.username) {
+      setTyping(`${data.sender}${' '}is typing...`);
+    }
+  })
+}
     if (typing) {
       const timer = setTimeout(() => setTyping(null), 3000);
       return () => clearTimeout(timer);
     }
 
   }, [typing, user.username]);
+
   useEffect(() => {
     initiateSocket(API.replace(/\/api\/?$/, ''));
 
