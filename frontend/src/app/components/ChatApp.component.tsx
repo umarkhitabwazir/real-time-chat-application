@@ -99,8 +99,9 @@ const ChatApp: React.FC<User> = ({ user }) => {
   useEffect(() => {
      
     socket?.on('typing', (data: { sender: string, receiver: string }) => {
+      console.log("Typing event received:", data);
       if (data.receiver === user.username) {
-      setTyping(`typing...`);
+      setTyping(`${data.sender}${' '}typing...`);
       }
     })
      if (typing) {
@@ -112,7 +113,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
   useEffect(() => {
     initiateSocket(API.replace(/\/api\/?$/, ''));
       
-  },[API, user.username]);
+  },[API]);
   useEffect(() => {
     subscribeToMessages((msg: Message) => {
         const other = msg.sender.username === user.username
@@ -212,7 +213,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
           </span>
           {typing && (
             <span className="text-sm text-gray-500 flex items-center gap-1">
-              typing
+              {typing}
               <span className="animate-bounce delay-0">.</span>
               <span className="animate-bounce delay-150">.</span>
               <span className="animate-bounce delay-300">.</span>

@@ -21,7 +21,7 @@ io.on("connection", (socket) => {
   socket.on("message", (message) => {
     console.log("Received message from frontend:", message);
     io.emit("backend-message", message);
-     socket.broadcast.emit('message', message);
+     socket.emit('message', message);
   })
   socket.on('typing', (data) => {
     console.log("User is typing:", data);

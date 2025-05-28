@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react'
 import { User } from '../interfaces/user.interface'
 import axios, { AxiosError } from 'axios'
-import { useRouter } from 'next/navigation'
+import { useRouter} from 'next/navigation'
 
 
 
@@ -14,23 +14,19 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
     const API = process.env.NEXT_PUBLIC_API_URL
     const router = useRouter();
     const [user, setUser] = React.useState<User | null>(null)
-     const fetchLoggedInUser = async () => {
+       const fetchLoggedInUser = async () => {
             try {
                 const response = await axios.get(`${API}/logged-in-user`, { withCredentials: true });
                 const data = response.data.data;
 
                 console.log("Logged in user data:", data);
 
-      if (!data) {
-        return router.push('/api/login');
-      }
-
                 setUser(data);
             } catch (error:unknown) {
                 if (error instanceof AxiosError) {
                     console.log("Error fetching logged in user:", error.response?.data);
-                    if (error.response?.data.error==="Invalid token") {
-                     return   router.push('/api/login');
+                    if (error.response?.data.error==="Unauthorized") {
+                     return   router.push('/api/login?redirectTo=' + encodeURIComponent(window.location.href));
                         
                     }
                     
