@@ -18,7 +18,7 @@ interface Message {
 
 }
 
-let socket:typeof Socket = null!;
+let socket: typeof Socket = null!;
 
 
 
@@ -33,7 +33,7 @@ export const initiateSocket = (url: string) => {
     console.log("✅ Socket connected:", socket.id);
   });
 
-  socket.on("connect_error", (err:Error ) => {
+  socket.on("connect_error", (err: Error) => {
     console.error("❌ Socket connection error:", err);
   });
 };
@@ -82,7 +82,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
       setConversations(grouped);
       setParticipants(Array.from(usersSet));
 
-    
+
 
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response?.data.error === 'Invalid token') {
@@ -97,41 +97,41 @@ const ChatApp: React.FC<User> = ({ user }) => {
 
 
   useEffect(() => {
-     
+
     socket?.on('typing', (data: { sender: string, receiver: string }) => {
       console.log("Typing event received:", data);
       if (data.receiver === user.username) {
-      setTyping(`${data.sender}${' '}typing...`);
+        setTyping(`${data.sender}${' '}is typing...`);
       }
     })
-     if (typing) {
-    const timer = setTimeout(() => setTyping(null), 3000);
-    return () => clearTimeout(timer);
-  }
+    if (typing) {
+      const timer = setTimeout(() => setTyping(null), 3000);
+      return () => clearTimeout(timer);
+    }
 
   }, [typing, user.username]);
   useEffect(() => {
     initiateSocket(API.replace(/\/api\/?$/, ''));
-      
-  },[API]);
+
+  }, [API]);
   useEffect(() => {
     subscribeToMessages((msg: Message) => {
-        const other = msg.sender.username === user.username
-          ? msg.receiver.username
-          : msg.sender.username;
+      const other = msg.sender.username === user.username
+        ? msg.receiver.username
+        : msg.sender.username;
 
-        setConversations((prev) => ({
-          ...prev,
-          [other]: [...(prev[other] || []), msg],
-        }));
-      });
-  },[])
+      setConversations((prev) => ({
+        ...prev,
+        [other]: [...(prev[other] || []), msg],
+      }));
+    });
+  }, [])
   useEffect(() => {
     fetchMessages();
 
-  },[])
-  
-  
+  }, [])
+
+
 
   const handleSend = async () => {
     if (!messageText.trim() || !selectedUser) {
@@ -151,8 +151,8 @@ const ChatApp: React.FC<User> = ({ user }) => {
 
       sendMessage(res.data.data);
       setTyping(null);
-    
-        setMessageText('');
+
+      setMessageText('');
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response?.data.error === 'Invalid token') {
         alert('Session expired, please login again');
@@ -212,11 +212,11 @@ const ChatApp: React.FC<User> = ({ user }) => {
 
           </span>
           {typing && (
-            <span className="text-sm text-gray-500 flex items-center gap-1">
+
+            <span className="text-xs animate-bounce  text-blue-500">
               {typing}
-              <span className="animate-bounce delay-0">.</span>
-              <span className="animate-bounce delay-150">.</span>
-              <span className="animate-bounce delay-300">.</span>
+
+
             </span>
           )}
 
