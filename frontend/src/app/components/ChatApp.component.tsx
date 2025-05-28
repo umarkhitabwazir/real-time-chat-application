@@ -65,13 +65,13 @@ const ChatApp: React.FC<User> = ({ user }) => {
   const router = useRouter();
  
  
-  console.log("Conversations:",  conversations[selectedUser]?.filter(
-    (msg: Message, index: number, self: Message[]) =>{
-      index === self.findIndex((m) => m._id === msg._id)
-      console.log( "Message:", msg, "Index:", index, "Self:", self);
+  // console.log("Conversations:",  conversations[selectedUser]?.filter(
+  //   (msg: Message, index: number, self: Message[]) =>{
+  //     index === self.findIndex((m) => m._id === msg._id)
+  //     console.log( "Message:", msg, "Index:", index, "Self:", self);
     
-    }
-  ));
+  //   }
+  // ));
   const fetchMessages = async () => {
     try {
       const res = await axios.get(`${API}/fetch-all-message`, { withCredentials: true });
