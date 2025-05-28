@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { Socket } from 'socket.io-client';
 // Define a type for individual chat messages
 interface Message {
+  _id?: string;
   sender: { username: string, avatar?: string };
   receiver: { username: string, avatar?: string };
   content: string;
@@ -40,7 +41,7 @@ export const initiateSocket = (url: string) => {
 
 export const subscribeToMessages = (cb: (msg: Message) => void) => {
   if (!socket) return;
-  socket.off('backend-message'); // remove previous to prevent duplicates
+  // socket.off('backend-message'); // remove previous to prevent duplicates
   socket.on('backend-message', cb);
 };
 
@@ -51,6 +52,7 @@ export const sendMessage = (message: Message) => {
 const ChatApp: React.FC<User> = ({ user }) => {
   const [messageText, setMessageText] = useState('');
   const [conversations, setConversations] = useState<Record<string, Message[]>>({});
+
   const [participants, setParticipants] = useState<string[]>([]);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -59,8 +61,17 @@ const ChatApp: React.FC<User> = ({ user }) => {
   const searchParams = useSearchParams();
   const selectedUser = searchParams.get('user') || '';
   const API = process.env.NEXT_PUBLIC_API_URL!;
-  const router = useRouter();
 
+  const router = useRouter();
+ 
+ 
+  console.log("Conversations:",  conversations[selectedUser]?.filter(
+    (msg: Message, index: number, self: Message[]) =>{
+      index === self.findIndex((m) => m._id === msg._id)
+      console.log( "Message:", msg, "Index:", index, "Self:", self);
+    
+    }
+  ));
   const fetchMessages = async () => {
     try {
       const res = await axios.get(`${API}/fetch-all-message`, { withCredentials: true });
@@ -87,7 +98,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response?.data.error === 'Invalid token') {
         alert('Session expired, please login again');
-        router.push('/api/login');
+        router.push(`/api/login?redirectTo=${encodeURIComponent(window.location.href)}`);
       } else {
         console.error(err);
         setError('Failed to fetch messages.');
@@ -116,7 +127,7 @@ if (socket){
   useEffect(() => {
     initiateSocket(API.replace(/\/api\/?$/, ''));
 
-  }, [API]);
+  }, []);
   useEffect(() => {
     subscribeToMessages((msg: Message) => {
       const other = msg.sender.username === user.username
@@ -132,7 +143,7 @@ if (socket){
   useEffect(() => {
     fetchMessages();
 
-  }, [])
+  }, [ API, user.username]);
 
 
 

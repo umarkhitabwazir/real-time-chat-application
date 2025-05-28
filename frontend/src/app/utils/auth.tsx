@@ -26,7 +26,7 @@ const AuthenticatedComponent=(prop:Omit<P,"users">)=>{
             } catch (error:unknown) {
                 if (error instanceof AxiosError) {
                     console.log("Error fetching logged in user:", error.response?.data);
-                    if (error.response?.data.error==="Unauthorized") {
+                    if (error.response?.data.error==="Unauthorized" || "Invalid token") {
                      return   router.push('/api/login?redirectTo=' + encodeURIComponent(window.location.href));
                         
                     }
