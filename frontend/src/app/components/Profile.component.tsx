@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import { User } from '../interfaces/user.interface'
 
 const profileComponent:React.FC<User> = ({user}) => {
