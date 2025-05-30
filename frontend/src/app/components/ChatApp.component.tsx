@@ -42,6 +42,7 @@ export const initiateSocket = (url: string) => {
 export const subscribeToMessages = (cb: (msg: Message) => void) => {
   if (!socket) return;
   // socket.off('backend-message'); // remove previous to prevent duplicates
+  console.log('msg', cb)
   socket.on('backend-message', cb);
 };
 
@@ -52,7 +53,6 @@ export const sendMessage = (message: Message) => {
 const ChatApp: React.FC<User> = ({ user }) => {
   const [messageText, setMessageText] = useState('');
   const [conversations, setConversations] = useState<Record<string, Message[]>>({});
-
   const [participants, setParticipants] = useState<string[]>([]);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -63,15 +63,9 @@ const ChatApp: React.FC<User> = ({ user }) => {
   const API = process.env.NEXT_PUBLIC_API_URL!;
 
   const router = useRouter();
- 
- 
-  // console.log("Conversations:",  conversations[selectedUser]?.filter(
-  //   (msg: Message, index: number, self: Message[]) =>{
-  //     index === self.findIndex((m) => m._id === msg._id)
-  //     console.log( "Message:", msg, "Index:", index, "Self:", self);
-    
-  //   }
-  // ));
+
+
+
   const fetchMessages = async () => {
     try {
       const res = await axios.get(`${API}/fetch-all-message`, { withCredentials: true });
@@ -108,26 +102,30 @@ const ChatApp: React.FC<User> = ({ user }) => {
 
 
   useEffect(() => {
-if (socket){
+    if (socket) {
+      console.log("socket", socket.id)
+      // socket?.on('typing', (data: { sender: string, receiver: string }) => {
+      socket.on('userTyping', ({ sender, receiver }: { sender: string; receiver: string }) => {
+        console.log("user typing")
+        console.log("Typing event received:", sender, receiver || "No data");
+        if (receiver === user.username) {
+          setTyping(`${sender}${' '}is typing...`);
+        }
+      })
 
-  socket?.on('typing', (data: { sender: string, receiver: string }) => {
-    console.log("Typing event received:", data || "No data");
-    if (data.receiver === user.username) {
-      setTyping(`${data.sender}${' '}is typing...`);
     }
-  })
-}
     if (typing) {
       const timer = setTimeout(() => setTyping(null), 3000);
       return () => clearTimeout(timer);
     }
 
-  }, [typing, user.username]);
+  }, [typing, socket]);
 
   useEffect(() => {
     initiateSocket(API.replace(/\/api\/?$/, ''));
 
   }, []);
+
   useEffect(() => {
     subscribeToMessages((msg: Message) => {
       const other = msg.sender.username === user.username
@@ -138,12 +136,22 @@ if (socket){
         ...prev,
         [other]: [...(prev[other] || []), msg],
       }));
+      setParticipants([msg.receiver.username])
+      // socket.on('updateParticipants', ({ sender, receiver }: { sender: string, receiver: string }) => {
+      //   console.log('updateParticipants sender', sender)
+      //   console.log('updateParticipants receiver', receiver)
+      //   const other = user.username === sender ? receiver : sender
+      //   console.log('updateParticipants other', other)
+      //   setParticipants((prev) =>
+      //     prev.includes(other) ? prev : [...prev, other]
+      //   )
+      // })
     });
   }, [])
   useEffect(() => {
     fetchMessages();
 
-  }, [ API, user.username]);
+  }, [API, user.username]);
 
 
 
@@ -164,6 +172,7 @@ if (socket){
       );
 
       sendMessage(res.data.data);
+
       setTyping(null);
 
       setMessageText('');
@@ -205,14 +214,22 @@ if (socket){
             {participants.map((name) => (
               <li
                 key={name}
-                className={`p-2 cursor-pointer rounded ${selectedUser === name ? 'bg-blue-500 text-white' : 'text-black'}`}
+                className={`p-2 cursor-pointer flex flex-col rounded ${selectedUser === name ? 'bg-blue-500 text-white' : 'text-black'}`}
                 onClick={() => {
                   setError('');
                   setMessageText('');
                   router.push(`/api/chat?user=${name}`);
                 }}
               >
-                {name}
+               <span>{name}</span> 
+                  {typing && selectedUser===name && (
+
+              <span className="text-xs animate-bounce    text-white">
+                {typing}
+
+
+              </span>
+            )}
               </li>
             ))}
           </ul>
@@ -223,16 +240,9 @@ if (socket){
         <h2 className="text-xl font-bold mb-2 flex flex-col gap-2 ">
           <span>
             {selectedUser ? `Chat with ${selectedUser}` : 'Select a conversation'}
-
           </span>
-          {typing && (
+          
 
-            <span className="text-xs animate-bounce  text-blue-500">
-              {typing}
-
-
-            </span>
-          )}
 
         </h2>
 
@@ -240,6 +250,7 @@ if (socket){
           <div className="flex-1 border bg-white rounded p-4 overflow-y-auto">
             {conversations[selectedUser]?.map((msg, idx) => (
               <React.Fragment key={idx}>
+
                 <div title='more' className={`flex justify-center gap-1 cursor-pointer  ${msg.sender.username === user.username ? 'justify-end hover:bg-green-400 ' : 'justify-start hover:bg-gray-400'} mb-4`}>
                   {msg.sender.username === user.username ?
                     <div className='flex justify-end '>
@@ -284,6 +295,7 @@ if (socket){
 
               </React.Fragment >
             ))}
+
           </div>
         )}
 
@@ -302,9 +314,12 @@ if (socket){
               value={messageText}
               onChange={(e) => {
                 if (socket && selectedUser) {
+                  const roomId = [user.username, selectedUser].sort().join('_'); // e.g., "alice_bob"
+                  socket.emit('joinRoom', roomId);
                   socket.emit('typing', {
                     sender: user.username,
                     receiver: selectedUser,
+                    room: roomId,
                   });
                 }
                 setMessageText(e.target.value);

@@ -3,30 +3,54 @@ import dotenv from "dotenv"
 import { dbConnect } from "./db/db.js"
 import { ApiError } from "./utils/api-error.js"
 import { createServer } from "http"
-import {Server} from "socket.io"
+import { Server } from "socket.io"
 import cors from "cors"
 
 dotenv.config({
-    path:".env"
+  path: ".env"
 })
-const port=process.env.PORT
+const port = process.env.PORT
 const httpServer = createServer(app)
-const io=new Server(httpServer,cors({
-    origin: process.env.origin,
-    credentials: true,
-}));   
+const io = new Server(httpServer, cors({
+  origin: process.env.origin,
+  credentials: true,
+}));
 
 io.on("connection", (socket) => {
-  
+
   socket.on("message", (message) => {
     console.log("Received message from frontend:", message);
     io.emit("backend-message", message);
-     socket.emit('message', message);
+    socket.emit('message', message);
+
+    io.to(message.sender.username).emit("updateParticipants", {
+      sender: message.sender.username,
+      receiver: message.receiver.username
+    })
+    io.to(message.receiver.username).emit("updateParticipants", {
+      sender: message.sender.username,
+      receiver: message.receiver.username
+    })
+
+
   })
+
+  // socket.on('typing', (data) => {
+  //   console.log("User is typing:", data);
+  //   io.to(data.sender).emit('userTyping', { sender: data.sender, receiver: data.receiver });
+  //   io.to(data.receiver).emit('userTyping', { sender: data.sender, receiver: data.receiver });
+
+  // });
   socket.on('typing', (data) => {
-    console.log("User is typing:", data);
-    socket.broadcast.emit('typing', data);
-  });
+  console.log("User is typing:", data);
+  io.to(data.room).emit('userTyping', { sender: data.sender, receiver: data.receiver });
+});
+  
+  socket.on('joinRoom', (roomId) => {
+  socket.join(roomId);
+  
+  console.log(`Socket ${socket.id} joined room: ${roomId}`);
+});
 });
 
 app.get('/', (req, res) => {
@@ -57,13 +81,13 @@ app.get('/', (req, res) => {
 });
 
 
-dbConnect().then(()=>{
+dbConnect().then(() => {
 
-httpServer.listen(port,()=>{
+  httpServer.listen(port, () => {
     console.log(`app listing on ${port}`)
-})
+  })
 }
-).catch((error)=>{
-    console.log("DB connection failed:",error)
-    throw new ApiError(501,"DB connection failed")
+).catch((error) => {
+  console.log("DB connection failed:", error)
+  throw new ApiError(501, "DB connection failed")
 })
