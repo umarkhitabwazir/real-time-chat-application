@@ -18,12 +18,12 @@ const Header: React.FC<User> = ({ user }) => {
 
                 {/* Desktop Menu */}
                 <div className="hidden sm:flex space-x-4">
-                    <Link href="/" className="hover:text-gray-400">Home</Link>
-                    <Link href="/api/chat" className="hover:text-gray-400">Chat</Link>
-                    <Link href="/api/about" className="hover:text-gray-400">About</Link>
-                    <Link href="https://github.com/umarkhitabwazir/real-time-chat-application" className="hover:text-gray-400">source code</Link>
-                    <Link href="/api/login" className="hover:text-gray-400">Login</Link>
-                    <Link href="/api/register" className="hover:text-gray-400">Register</Link>
+                     <Link href="/" className="hover:text-gray-400" >Home</Link>
+                    <Link href="/api/chat" className="hover:text-gray-400" >Chat</Link>
+                    <Link href="/api/about" className="hover:text-gray-400" >About</Link>
+                    <Link href="https://github.com/umarkhitabwazir/real-time-ch at-application " className="hover:text-gray-400" >source code</Link>
+                    <Link href="/api/login" className="hover:text-gray-400" >Login</Link>
+                    <Link href= "/api/register" className="hover:text-gray-400">Register</Link>
                     <Image
                         onClick={() => setShowProfile((prev) => !prev)}
                         title="profile" src="/default-avatar.png"
@@ -47,22 +47,22 @@ const Header: React.FC<User> = ({ user }) => {
                                 setShowMenu(false);
                                 }
                             }}
-                            className="absolute right-4 top-16 w-48 bg-gray-800 text-white rounded-b-md shadow-lg z-50">
+                            className="absolute right-4 top-16 w-70 bg-gray-800 text-white rounded-b-md shadow-lg z-50">
                             <ul className="p-4 space-y-2">
-                                <li><Link href="/" className="hover:text-gray-400">Home</Link></li>
-                                <li><Link href="/about" className="hover:text-gray-400">About</Link></li>
-                                <li><Link href="/api/chat" className="hover:text-gray-400">Chat</Link></li>
-                                <li><Link href="/api/login" className="hover:text-gray-400">Login</Link></li>
-                                <li><Link href="/api/register" className="hover:text-gray-400">Register</Link></li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/" >Home</Link></li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/about" >About</Link></li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/api/chat" >Chat</Link></li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/api/login" >Login</Link></li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/api/register" >Register</Link></li>
                                 <li
                                     onClick={() => setShowProfile((prev) => !prev)}
-                                    className="flex items-center space-x-2 cursor-pointer hover:text-gray-400">
+                                    className="flex items-center space-x-2  cursor-pointer hover:bg-white hover:text-black">
 
                                     <Image
                                         title="profile" src="/default-avatar.png" className="rounded-full cursor-pointer bg-cover object-cover  "
                                         width={30} height={30} alt="profile"
                                     />
-                                    <span>profile</span>
+                                    <span className=" ">{user.email}</span>
                                 </li>
 
 

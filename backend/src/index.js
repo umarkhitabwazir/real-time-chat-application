@@ -17,41 +17,33 @@ const io = new Server(httpServer, cors({
 }));
 
 io.on("connection", (socket) => {
+  socket.on("join", (username) => {
+    socket.join(username); // Join room with username
+    console.log(`${username} joined their personal room`);
+  });
 
   socket.on("message", (message) => {
     console.log("Received message from frontend:", message);
+
     io.emit("backend-message", message);
     socket.emit('message', message);
 
     io.to(message.sender.username).emit("updateParticipants", {
       sender: message.sender.username,
       receiver: message.receiver.username
-    })
+    });
+
     io.to(message.receiver.username).emit("updateParticipants", {
       sender: message.sender.username,
       receiver: message.receiver.username
-    })
-
-
-  })
-
-  // socket.on('typing', (data) => {
-  //   console.log("User is typing:", data);
-  //   io.to(data.sender).emit('userTyping', { sender: data.sender, receiver: data.receiver });
-  //   io.to(data.receiver).emit('userTyping', { sender: data.sender, receiver: data.receiver });
-
-  // });
-  socket.on('typing', (data) => {
+    });
+  });
+    socket.on('typing', (data) => {
   console.log("User is typing:", data);
-  io.to(data.room).emit('userTyping', { sender: data.sender, receiver: data.receiver });
-});
-  
-  socket.on('joinRoom', (roomId) => {
-  socket.join(roomId);
-  
-  console.log(`Socket ${socket.id} joined room: ${roomId}`);
+  io.to(data.room).emit('userTyping', { sender: data.sender, receiver:data.receiver });
 });
 });
+
 
 app.get('/', (req, res) => {
   res.send(`

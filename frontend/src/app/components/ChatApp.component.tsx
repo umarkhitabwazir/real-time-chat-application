@@ -100,26 +100,28 @@ const ChatApp: React.FC<User> = ({ user }) => {
     }
   };
 
+  const userTyping = async () => {
 
+    socket.on('userTyping', ({ sender, receiver }: { sender: string; receiver: string }) => {
+      console.log("user typing")
+      console.log("Typing event received:", sender, receiver || "No data");
+      if (receiver === user.username) {
+        setTyping(`${sender}${' '}is typing...`);
+      }
+    })
+  }
   useEffect(() => {
     if (socket) {
-      console.log("socket", socket.id)
-      // socket?.on('typing', (data: { sender: string, receiver: string }) => {
-      socket.on('userTyping', ({ sender, receiver }: { sender: string; receiver: string }) => {
-        console.log("user typing")
-        console.log("Typing event received:", sender, receiver || "No data");
-        if (receiver === user.username) {
-          setTyping(`${sender}${' '}is typing...`);
-        }
-      })
 
+      userTyping()
     }
+
     if (typing) {
       const timer = setTimeout(() => setTyping(null), 3000);
       return () => clearTimeout(timer);
     }
 
-  }, [typing, socket]);
+  }, [typing, socket, user.username]);
 
   useEffect(() => {
     initiateSocket(API.replace(/\/api\/?$/, ''));
@@ -136,24 +138,37 @@ const ChatApp: React.FC<User> = ({ user }) => {
         ...prev,
         [other]: [...(prev[other] || []), msg],
       }));
-      setParticipants([msg.receiver.username])
-      // socket.on('updateParticipants', ({ sender, receiver }: { sender: string, receiver: string }) => {
-      //   console.log('updateParticipants sender', sender)
-      //   console.log('updateParticipants receiver', receiver)
-      //   const other = user.username === sender ? receiver : sender
-      //   console.log('updateParticipants other', other)
-      //   setParticipants((prev) =>
-      //     prev.includes(other) ? prev : [...prev, other]
-      //   )
-      // })
+      // setParticipants((prev:any)=>
+      //   participants.includes(prev)?prev:
+      //   [...prev,other])
+
     });
   }, [])
+
   useEffect(() => {
     fetchMessages();
 
+
+
   }, [API, user.username]);
 
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit("join", user.username);
+    const handler = ({ sender, receiver }: { sender: string, receiver: string }) => {
+      console.log('updateParticipants sender', sender)
+      console.log('updateParticipants receiver', receiver)
+      const other = user.username === sender ? receiver : sender;
+      console.log('updateParticipants other', other)
 
+      setParticipants((prev) =>
+        prev.includes(other) ? prev : [...prev, other]
+      );
+    };
+
+    socket.on('updateParticipants', handler);
+
+  }, [socket, user.username])
 
   const handleSend = async () => {
     if (!messageText.trim() || !selectedUser) {
@@ -181,6 +196,10 @@ const ChatApp: React.FC<User> = ({ user }) => {
         alert('Session expired, please login again');
         router.push('/api/login');
       } else if (err instanceof AxiosError) {
+        if (err.response?.data.error === 'Unauthorized') {
+          router.push(`/api/login?redirectTo=${encodeURIComponent(window.location.href)}`)
+
+        }
         setError(err.response?.data.error || 'Send failed');
       } else {
         console.error(err);
@@ -195,7 +214,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
     <div className="flex h-screen">
       {showAddUser && <AddUserComponent setShowAddUser={setShowAddUser} />}
 
-      <aside className="w-fit bg-gray-200 p-4 overflow-y-auto overflow-x-auto">
+      <aside className="w-fit bg-gray-200 p-4 overflow-y-auto">
         <button
           onClick={() => {
             setError('');
@@ -221,15 +240,15 @@ const ChatApp: React.FC<User> = ({ user }) => {
                   router.push(`/api/chat?user=${name}`);
                 }}
               >
-               <span>{name}</span> 
-                  {typing && selectedUser===name && (
+                <span>{name}</span>
+                {typing && selectedUser === name && (
 
-              <span className="text-xs animate-bounce    text-white">
-                {typing}
+                  <span className="text-xs animate-bounce    text-white">
+                    {typing}
 
 
-              </span>
-            )}
+                  </span>
+                )}
               </li>
             ))}
           </ul>
@@ -241,13 +260,13 @@ const ChatApp: React.FC<User> = ({ user }) => {
           <span>
             {selectedUser ? `Chat with ${selectedUser}` : 'Select a conversation'}
           </span>
-          
+
 
 
         </h2>
 
         {selectedUser && (
-          <div className="flex-1 border bg-white rounded p-4 overflow-y-auto">
+          <div className="flex-1 border bg-white rounded p-4 overflow-x-auto overflow-y-auto">
             {conversations[selectedUser]?.map((msg, idx) => (
               <React.Fragment key={idx}>
 
@@ -259,7 +278,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
                         alt={`${msg.sender.username}' avatar`}
                         width={20}
                         height={20}
-                        className="rounded-xl w-auto  h-auto object-center mb-1"
+                        className="rounded-xl w-20  h-20 object-center mb-1"
                       />
                     </div>
                     :
@@ -269,18 +288,19 @@ const ChatApp: React.FC<User> = ({ user }) => {
                         alt={`${msg.receiver.username}' avatar`}
                         width={20}
                         height={20}
-                        className="rounded-xl w-auto h-auto object-center mb-1"
+                        className="rounded-xl w-20 h-20 object-center mb-1"
                       />
                     </div>
                   }
                   <div
-                    className={`mb-2 p-2 flex flex-col text-white rounded-b-md w-fit ${msg.sender.username === user.username
+                    className={`mb-2 p-2 flex flex-col text-white max-w-xl   rounded-b-md  ${msg.sender.username === user.username
                       ? ' bg-green-400 rounded-l-md'
                       : ' rounded-r-md bg-gray-400'
                       }`}
                   >
-
-                    {msg.content}
+                    <span className='block max-w-md break-words whitespace-pre-wrap'>
+                      {msg.content}
+                    </span>
                     <div className='flex justify-between items-center'>
                       <span className="text-xs  text-gray-200 ml-2">
                         {new Date(msg?.createdAt || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -315,11 +335,12 @@ const ChatApp: React.FC<User> = ({ user }) => {
               onChange={(e) => {
                 if (socket && selectedUser) {
                   const roomId = [user.username, selectedUser].sort().join('_'); // e.g., "alice_bob"
-                  socket.emit('joinRoom', roomId);
+                  socket.emit("join", roomId);
+
                   socket.emit('typing', {
+                    room: roomId,
                     sender: user.username,
                     receiver: selectedUser,
-                    room: roomId,
                   });
                 }
                 setMessageText(e.target.value);

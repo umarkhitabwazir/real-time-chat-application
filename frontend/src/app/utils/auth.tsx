@@ -15,6 +15,7 @@ const Auth = <P extends User>(
         const API = process.env.NEXT_PUBLIC_API_URL
         const router = useRouter();
         const route = usePathname();
+        const noLoadingOnThisRoutes=['/api/login','/']
         console.log("Current route:", route);
         const [user, setUser] = React.useState<User | null>(null)
         const fetchLoggedInUser = async () => {
@@ -44,7 +45,7 @@ const Auth = <P extends User>(
 
             fetchLoggedInUser();
         }, [])
-        if (!user && route !== '/') {
+        if (!user && !noLoadingOnThisRoutes.includes(route)) {
             return (
                 <LoadingComponent />
             )
