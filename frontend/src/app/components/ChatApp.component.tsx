@@ -138,9 +138,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
         ...prev,
         [other]: [...(prev[other] || []), msg],
       }));
-      // setParticipants((prev:any)=>
-      //   participants.includes(prev)?prev:
-      //   [...prev,other])
+   
 
     });
   }, [])
@@ -260,6 +258,14 @@ const ChatApp: React.FC<User> = ({ user }) => {
           <span>
             {selectedUser ? `Chat with ${selectedUser}` : 'Select a conversation'}
           </span>
+             {typing && selectedUser && (
+
+                  <span className="sm:hidden text-xs animate-bounce    text-white">
+                    {typing}
+
+
+                  </span>
+                )}
         </h2>
  {selectedUser&&<div className='sm:hidden w-full rounded-t-md h-9 p-4 flex justify-start items-center bg-blue-600 '>
 <Image

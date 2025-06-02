@@ -59,7 +59,7 @@ const Header: React.FC<User> = ({ user }) => {
                                     <Link href="/" >Home</Link>
                                 </li>
                                 <li className="hover:bg-white hover:text-black  cursor-pointer">
-                                    <Link href="/about" >About</Link>
+                                    <Link href="/api/about" >About</Link>
                                 </li>
                                 <li className="hover:bg-white hover:text-black  cursor-pointer">
                                     <Link href="/api/chat" >Chat</Link>
