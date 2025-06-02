@@ -15,7 +15,7 @@ const Auth = <P extends User>(
         const API = process.env.NEXT_PUBLIC_API_URL
         const router = useRouter();
         const route = usePathname();
-        const noLoadingOnThisRoutes=['/api/login','/']
+        const noLoadingOnThisRoutes=['/api/login','/','/api/register']
         console.log("Current route:", route);
         const [user, setUser] = React.useState<User | null>(null)
         const fetchLoggedInUser = async () => {

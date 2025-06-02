@@ -4,7 +4,7 @@ import { User } from '../interfaces/user.interface'
 
 const profileComponent:React.FC<User> = ({user}) => {
     return (
-        <div className='absolute sm:right-0 right-48   z-50' >
+        <div className='absolute right-0 top-11   z-50' >
             <div className='   p-4 w-45 rounded-b-md bg-gray-800 text-white'>
                 <div className=' flex flex-col items-center justify-start space-y-2'>
                     <h1 className='text-2xl font-bold'>Profile</h1>

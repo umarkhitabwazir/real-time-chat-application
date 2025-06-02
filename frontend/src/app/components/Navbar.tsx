@@ -5,25 +5,31 @@ import React, { useState } from "react";
 import ProfileComponent from "./Profile.component";
 import Auth from "../utils/auth";
 import { User } from "../interfaces/user.interface";
+import { usePathname } from "next/navigation";
 
 const Header: React.FC<User> = ({ user }) => {
     console.log('user in header', user)
     const [showMenu, setShowMenu] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
+    const pathName = usePathname()
+    const noShowNavbarOnThisRoutes = ['/api/login', '/api/register']
+    console.log('params', pathName)
+
 
     return (
+        !noShowNavbarOnThisRoutes.includes(pathName) &&
         <>
             <div className="flex items-center justify-between p-4 bg-gray-800 text-white relative">
                 <div className="text-2xl font-bold">Chat App</div>
 
                 {/* Desktop Menu */}
                 <div className="hidden sm:flex space-x-4">
-                     <Link href="/" className="hover:text-gray-400" >Home</Link>
+                    <Link href="/" className="hover:text-gray-400" >Home</Link>
                     <Link href="/api/chat" className="hover:text-gray-400" >Chat</Link>
                     <Link href="/api/about" className="hover:text-gray-400" >About</Link>
-                    <Link href="https://github.com/umarkhitabwazir/real-time-ch at-application " className="hover:text-gray-400" >source code</Link>
+                    <Link href="https://github.com/umarkhitabwazir/real-time-chat-application" className="hover:text-gray-400" >source code</Link>
                     <Link href="/api/login" className="hover:text-gray-400" >Login</Link>
-                    <Link href= "/api/register" className="hover:text-gray-400">Register</Link>
+                    <Link href="/api/register" className="hover:text-gray-400">Register</Link>
                     <Image
                         onClick={() => setShowProfile((prev) => !prev)}
                         title="profile" src="/default-avatar.png"
@@ -44,16 +50,29 @@ const Header: React.FC<User> = ({ user }) => {
                         <div
                             onMouseLeave={() => {
                                 if (!showProfile) {
-                                setShowMenu(false);
+                                    setShowMenu(false);
                                 }
                             }}
                             className="absolute right-4 top-16 w-70 bg-gray-800 text-white rounded-b-md shadow-lg z-50">
                             <ul className="p-4 space-y-2">
-                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/" >Home</Link></li>
-                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/about" >About</Link></li>
-                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/api/chat" >Chat</Link></li>
-                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/api/login" >Login</Link></li>
-                                <li className="hover:bg-white hover:text-black  cursor-pointer"><Link href="/api/register" >Register</Link></li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer">
+                                    <Link href="/" >Home</Link>
+                                </li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer">
+                                    <Link href="/about" >About</Link>
+                                </li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer">
+                                    <Link href="/api/chat" >Chat</Link>
+                                </li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer">
+                                    <Link href="/api/login" >Login</Link>
+                                </li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer">
+                                    <Link href="/api/register" >Register</Link>
+                                </li>
+                                <li className="hover:bg-white hover:text-black  cursor-pointer">
+                                    <Link href="https://github.com/umarkhitabwazir/real-time-chat-application" className="hover:text-gray-400" >source code</Link>
+                                </li>
                                 <li
                                     onClick={() => setShowProfile((prev) => !prev)}
                                     className="flex items-center space-x-2  cursor-pointer hover:bg-white hover:text-black">
@@ -73,12 +92,12 @@ const Header: React.FC<User> = ({ user }) => {
             </div>
             {
                 showProfile &&
-                <div  onMouseLeave={() => {
-                   setShowMenu(false);
-                                setShowProfile(false);
-                            }}>
+                <div onMouseLeave={() => {
+                    setShowMenu(false);
+                    setShowProfile(false);
+                }}>
 
-                <ProfileComponent  user={user} />
+                    <ProfileComponent user={user} />
                 </div>
 
             }

@@ -211,10 +211,10 @@ const ChatApp: React.FC<User> = ({ user }) => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex  h-screen">
       {showAddUser && <AddUserComponent setShowAddUser={setShowAddUser} />}
 
-      <aside className="w-fit bg-gray-200 p-4 overflow-y-auto">
+      <aside className={`${selectedUser ? "sm:block hidden" : ""}  sm:w-fit w-screen h-screen sm:relative  absolute bg-gray-200 p-4 sm:overflow-y-auto overflow-y-hidden `}>
         <button
           onClick={() => {
             setError('');
@@ -233,7 +233,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
             {participants.map((name) => (
               <li
                 key={name}
-                className={`p-2 cursor-pointer flex flex-col rounded ${selectedUser === name ? 'bg-blue-500 text-white' : 'text-black'}`}
+                className={`p-2 cursor-pointer flex flex-col hover:bg-blue-600 rounded ${selectedUser === name ? 'bg-blue-500 text-white' : 'text-black'}`}
                 onClick={() => {
                   setError('');
                   setMessageText('');
@@ -255,18 +255,20 @@ const ChatApp: React.FC<User> = ({ user }) => {
         )}
       </aside>
 
-      <main className="flex-1 p-4 flex flex-col">
+      <main className="flex-1  p-4 flex flex-col">
         <h2 className="text-xl font-bold mb-2 flex flex-col gap-2 ">
           <span>
             {selectedUser ? `Chat with ${selectedUser}` : 'Select a conversation'}
           </span>
-
-
-
         </h2>
-
+ {selectedUser&&<div className='sm:hidden w-full rounded-t-md h-9 p-4 flex justify-start items-center bg-blue-600 '>
+<Image
+onClick={()=>router.push('/api/chat')}
+   src="/arrow.png" width={25} height={25} className='cursor-pointer' alt="arrow" />
+            </div>}
         {selectedUser && (
-          <div className="flex-1 border bg-white rounded p-4 overflow-x-auto overflow-y-auto">
+          <div className="flex-1 border bg-white rounded-b-md p-4 overflow-x-auto overflow-y-auto">
+
             {conversations[selectedUser]?.map((msg, idx) => (
               <React.Fragment key={idx}>
 

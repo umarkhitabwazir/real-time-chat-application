@@ -3,6 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('')
@@ -110,7 +111,17 @@ const LoginComponent = () => {
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
+        <div className="flex justify-center items-center text-gray-500 mt-2">
+          <span>or</span>
         </div>
+
+        <div className="mt-4 text-center">
+          <Link href="/api/register" className="text-blue-600 hover:underline">
+            Go to register
+          </Link>
+        </div>
+        </div>
+        
       </form>
     </div>
   )
