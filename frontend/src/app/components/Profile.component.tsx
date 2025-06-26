@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { User } from '../interfaces/user.interface'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 
 const ProfileComponent: React.FC<User> = ({ user }) => {
@@ -15,8 +15,11 @@ const ProfileComponent: React.FC<User> = ({ user }) => {
             router.push('/api/login')
 
 
-        } catch (_) {
-            router.push(`/api/login?redirectTo=${encodeURIComponent(window.location.href)}`);
+        } catch (error:unknown) {
+            if (error instanceof AxiosError) {
+                
+                router.push(`/api/login?redirectTo=${encodeURIComponent(window.location.href)}`);
+            }
 
 
         }
