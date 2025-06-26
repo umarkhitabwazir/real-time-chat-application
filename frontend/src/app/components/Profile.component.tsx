@@ -4,9 +4,9 @@ import { User } from '../interfaces/user.interface'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
-const profileComponent: React.FC<User> = ({ user }) => {
-    const API = process.env.NEXT_PUBLIC_API_URL
+const ProfileComponent: React.FC<User> = ({ user }) => {
     const router = useRouter()
+    const API = process.env.NEXT_PUBLIC_API_URL
 
 
     const loggedOut = async () => {
@@ -15,7 +15,7 @@ const profileComponent: React.FC<User> = ({ user }) => {
             router.push('/api/login')
 
 
-        } catch (error) {
+        } catch (_) {
             router.push(`/api/login?redirectTo=${encodeURIComponent(window.location.href)}`);
 
 
@@ -43,4 +43,4 @@ const profileComponent: React.FC<User> = ({ user }) => {
     )
 }
 
-export default profileComponent
+export default ProfileComponent
