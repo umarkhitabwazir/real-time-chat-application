@@ -8,7 +8,7 @@ import { ApiError } from "./utils/api-error.js"
 import fetchAllMessageRoute from "./routes/fetchAllMessage.route.js"
 import getLoggedInUserRoute from "./routes/getLoggedinUser.route.js"
 import checkUserRoute from "./routes/checkUser.route.js"
-
+import  {loggedOutRouter} from "./routes/loggedOut.route.js";
 console.log("process.env.origin", process.env.origin);
 const app = express()
 app.use(cookieParser())
@@ -25,7 +25,8 @@ app.use("/api",
     sendmessage,
     fetchAllMessageRoute,
     getLoggedInUserRoute,
-    checkUserRoute
+    checkUserRoute,
+    loggedOutRouter
 
 )
 app.use((err, req, res, next) => {

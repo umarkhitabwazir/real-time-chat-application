@@ -4,6 +4,7 @@ import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { setTimeout } from 'timers'
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('')
@@ -34,6 +35,10 @@ const LoginComponent = () => {
       console.log(response.data)
       setLoading(false)
       router.push(`${redirectTo}`)
+      setTimeout(() => {
+        window.location.reload()  
+      }
+      , 1500)
 
 
     } catch (err: unknown) {

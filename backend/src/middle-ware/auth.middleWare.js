@@ -13,6 +13,7 @@ console.log("Access Token:", accessToken);
         const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET);
 
         req.user = decoded;
+        req.token=accessToken;
         next();
     } catch (error) {
         throw new ApiError(401, "Invalid token");
