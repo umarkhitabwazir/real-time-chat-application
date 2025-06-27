@@ -40,7 +40,7 @@ const Header: React.FC<User> = ({ user }) => {
                 <div className="sm:hidden">
                     <button
                         onClick={() => setShowMenu((prev) => !prev)}
-                        className="bg-gray-600 px-3 py-1 cursor-pointer hover:bg-gray-500 hover:px-4 rounded"
+                        className="bg-gray-600 px-3 py-1 cursor-pointer hover:bg-gray-500 hover:px-5 rounded"
                     >
                         Menu
                     </button>
