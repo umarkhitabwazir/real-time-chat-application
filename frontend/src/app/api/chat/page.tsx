@@ -4,14 +4,7 @@ import ChatAppComponent from '@/app/components/ChatApp.component'
 const chat = () => {
   return (
     <div>
-      <ChatAppComponent user={{
-        _id: '',
-        username: '',
-        email: '',
-        password: '',
-        avatar: '',
-
-      }} />
+      <ChatAppComponent user={null} />
     </div>
   )
 }

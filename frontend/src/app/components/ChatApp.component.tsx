@@ -75,7 +75,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
       const usersSet = new Set<string>();
 
       data.forEach((msg) => {
-        const other = msg.sender.username === user.username
+        const other = msg.sender.username === user?.username
           ? msg.receiver.username
           : msg.sender.username;
 
@@ -105,7 +105,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
     socket.on('userTyping', ({ sender, receiver }: { sender: string; receiver: string }) => {
       console.log("user typing")
       console.log("Typing event received:", sender, receiver || "No data");
-      if (receiver === user.username) {
+      if (receiver === user?.username) {
         setTyping(`${sender}${' '}is typing...`);
       }
     })
@@ -121,7 +121,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
       return () => clearTimeout(timer);
     }
 
-  }, [typing, socket, user.username]);
+  }, [typing, socket, user?.username]);
 
   useEffect(() => {
     initiateSocket(API.replace(/\/api\/?$/, ''));
@@ -130,7 +130,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
 
   useEffect(() => {
     subscribeToMessages((msg: Message) => {
-      const other = msg.sender.username === user.username
+      const other = msg.sender.username === user?.username
         ? msg.receiver.username
         : msg.sender.username;
 
@@ -148,15 +148,15 @@ const ChatApp: React.FC<User> = ({ user }) => {
 
 
 
-  }, [API, user.username]);
+  }, [API, user?.username]);
 
   useEffect(() => {
     if (!socket) return;
-    socket.emit("join", user.username);
+    socket.emit("join", user?.username);
     const handler = ({ sender, receiver }: { sender: string, receiver: string }) => {
       console.log('updateParticipants sender', sender)
       console.log('updateParticipants receiver', receiver)
-      const other = user.username === sender ? receiver : sender;
+      const other = user?.username === sender ? receiver : sender;
       console.log('updateParticipants other', other)
 
       setParticipants((prev) =>
@@ -166,7 +166,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
 
     socket.on('updateParticipants', handler);
 
-  }, [socket, user.username])
+  }, [socket, user?.username])
 
   const handleSend = async () => {
     if (!messageText.trim() || !selectedUser) {
@@ -278,8 +278,8 @@ onClick={()=>router.push('/api/chat')}
             {conversations[selectedUser]?.map((msg, idx) => (
               <React.Fragment key={idx}>
 
-                <div title='more' className={`flex justify-center gap-1 cursor-pointer  ${msg.sender.username === user.username ? 'justify-end hover:bg-green-400 ' : 'justify-start hover:bg-gray-400'} mb-4`}>
-                  {msg.sender.username === user.username ?
+                <div title='more' className={`flex justify-center gap-1 cursor-pointer  ${msg.sender.username === user?.username ? 'justify-end hover:bg-green-400 ' : 'justify-start hover:bg-gray-400'} mb-4`}>
+                  {msg.sender.username === user?.username ?
                     <div className='flex justify-end '>
                       <Image
                         src={msg.sender.avatar || '/default-avatar.png'}
@@ -301,7 +301,7 @@ onClick={()=>router.push('/api/chat')}
                     </div>
                   }
                   <div
-                    className={`mb-2 p-2 flex flex-col text-white max-w-xl   rounded-b-md  ${msg.sender.username === user.username
+                    className={`mb-2 p-2 flex flex-col text-white max-w-xl   rounded-b-md  ${msg.sender.username === user?.username
                       ? ' bg-green-400 rounded-l-md'
                       : ' rounded-r-md bg-gray-400'
                       }`}
@@ -342,12 +342,12 @@ onClick={()=>router.push('/api/chat')}
               value={messageText}
               onChange={(e) => {
                 if (socket && selectedUser) {
-                  const roomId = [user.username, selectedUser].sort().join('_'); // e.g., "alice_bob"
+                  const roomId = [user?.username, selectedUser].sort().join('_'); // e.g., "alice_bob"
                   socket.emit("join", roomId);
 
                   socket.emit('typing', {
                     room: roomId,
-                    sender: user.username,
+                    sender: user?.username,
                     receiver: selectedUser,
                   });
                 }
