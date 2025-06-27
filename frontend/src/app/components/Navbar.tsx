@@ -39,8 +39,8 @@ const Header: React.FC<User> = ({ user }) => {
                 {/* Mobile Menu Button */}
                 <div className="sm:hidden">
                     <button
-                        onClick={() => setShowMenu(!showMenu)}
-                        className="bg-gray-600 px-3 py-1 rounded"
+                        onClick={() => setShowMenu((prev) => !prev)}
+                        className="bg-gray-600 px-3 py-1 cursor-pointer hover:bg-gray-500 hover:px-4 rounded"
                     >
                         Menu
                     </button>
@@ -73,6 +73,8 @@ const Header: React.FC<User> = ({ user }) => {
                                 <li className="hover:bg-white hover:text-black  cursor-pointer">
                                     <Link href="https://github.com/umarkhitabwazir/real-time-chat-application" className="hover:text-gray-400" >source code</Link>
                                 </li>
+                                {
+                                    user &&
                                 <li
                                     onClick={() => setShowProfile((prev) => !prev)}
                                     className="flex items-center space-x-2  cursor-pointer hover:bg-white hover:text-black">
@@ -81,8 +83,9 @@ const Header: React.FC<User> = ({ user }) => {
                                         title="profile" src="/default-avatar.png" className="rounded-full cursor-pointer bg-cover object-cover  "
                                         width={30} height={30} alt="profile"
                                     />
-                                    <span className=" ">{user.email}</span>
+                                    <span className=" ">{user?.email}</span>
                                 </li>
+                                }
 
 
                             </ul>
