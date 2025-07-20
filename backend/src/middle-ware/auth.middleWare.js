@@ -2,7 +2,6 @@ import { ApiError } from "../utils/api-error.js";
 import jwt from "jsonwebtoken";
 const middleWare = async (req, res, next) => {
     const accessToken = req.cookies?.accessToken || req.header("authorization")?.replace("Bearer ", "");
-console.log("Access Token:", accessToken);
     if (!accessToken) {
         throw new ApiError(401, "Unauthorized");
     }
@@ -11,7 +10,7 @@ console.log("Access Token:", accessToken);
 
     try {
         const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET);
-
+console.log("decoded", decoded);
         req.user = decoded;
         req.token=accessToken;
         next();

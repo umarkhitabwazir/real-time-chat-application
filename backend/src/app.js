@@ -9,6 +9,8 @@ import fetchAllMessageRoute from "./routes/fetchAllMessage.route.js"
 import getLoggedInUserRoute from "./routes/getLoggedinUser.route.js"
 import checkUserRoute from "./routes/checkUser.route.js"
 import  {loggedOutRouter} from "./routes/loggedOut.route.js";
+import deleteMessageForEveryOneRoute from "./routes/deleteMessageForEveryOne.route.js"
+import deleteMessageForMeRoute from "./routes/deleteMessageForMe.route.js"
 console.log("process.env.origin", process.env.origin);
 const app = express()
 app.use(cookieParser())
@@ -26,7 +28,9 @@ app.use("/api",
     fetchAllMessageRoute,
     getLoggedInUserRoute,
     checkUserRoute,
-    loggedOutRouter
+    loggedOutRouter,
+    deleteMessageForEveryOneRoute,
+    deleteMessageForMeRoute,
 
 )
 app.use((err, req, res, next) => {

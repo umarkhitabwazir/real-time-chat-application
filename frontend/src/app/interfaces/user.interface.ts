@@ -1,6 +1,6 @@
 export interface User {
    user?:{ _id: string;
-  username: string;
+  username?: string;
   email: string;
   password: string;
   avatar?: string;
@@ -9,5 +9,7 @@ export interface User {
   lastSeen?: Date;
   socketId?: string;} | null;
 }
+
+
 
 

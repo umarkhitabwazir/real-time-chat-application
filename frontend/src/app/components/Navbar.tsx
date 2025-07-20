@@ -23,7 +23,7 @@ const Header: React.FC<User> = ({ user }) => {
                 <div className="text-2xl font-bold">Chat App</div>
 
                 {/* Desktop Menu */}
-                <div className="hidden sm:flex space-x-4">
+                <div aria-disabled className="hidden sm:flex select-none space-x-4">
                     <Link href="/" className="hover:text-gray-400" >Home</Link>
                     <Link href="/api/chat" className="hover:text-gray-400" >Chat</Link>
                     <Link href="/api/about" className="hover:text-gray-400" >About</Link>
@@ -37,7 +37,7 @@ const Header: React.FC<User> = ({ user }) => {
                 </div>
 
                 {/* Mobile Menu Button */}
-                <div className="sm:hidden">
+                <div aria-disabled className="select-none sm:hidden">
                     <button
                         onClick={() => setShowMenu((prev) => !prev)}
                         className="bg-gray-600 px-3 py-1 cursor-pointer hover:bg-gray-500 hover:px-5 rounded"
@@ -48,12 +48,14 @@ const Header: React.FC<User> = ({ user }) => {
                     {/* Mobile Dropdown Menu */}
                     {showMenu && (
                         <div
+                        aria-disabled
                             onMouseLeave={() => {
                                 if (!showProfile) {
                                     setShowMenu(false);
                                 }
                             }}
-                            className="absolute right-4 top-16 w-70 bg-gray-800 text-white rounded-b-md shadow-lg z-50">
+                            className="absolute select-none right-4 top-16 w-70 bg-gray-800 text-white rounded-b-md shadow-lg z-50"
+                            >
                             <ul className="p-4 space-y-2">
                                 <li className="hover:bg-white hover:text-black  cursor-pointer">
                                     <Link href="/" >Home</Link>

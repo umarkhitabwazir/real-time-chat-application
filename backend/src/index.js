@@ -9,6 +9,7 @@ import cors from "cors"
 dotenv.config({
   path: ".env"
 })
+const onlineUsers = new Map(); // Use a single Map instance
 const port = process.env.PORT
 const httpServer = createServer(app)
 const io = new Server(httpServer, cors({
@@ -18,8 +19,37 @@ const io = new Server(httpServer, cors({
 
 io.on("connection", (socket) => {
   socket.on("join", (username) => {
+    const cleanUsername = username.split("_")[0]
+    socket.username = cleanUsername;
+    console.log("Socket connected:", socket.username);
+
+    onlineUsers.set(cleanUsername, socket.id);
+
+
     socket.join(username); // Join room with username
-    console.log(`${username} joined their personal room`);
+    if (onlineUsers.size > 0) {
+      console.log("onlineUsers",);
+
+      io.emit("userStatus", {
+        onlineUsers: Array.from(onlineUsers.keys()),
+      
+      })
+    }
+
+
+
+
+    console.log(` ${cleanUsername} joined their personal room`);
+
+  });
+
+  socket.on("disconnect", () => {
+    onlineUsers.delete(socket.username);
+    io.emit("userDisconnected", {
+      onlineUsers: Array.from(onlineUsers.keys()),
+     
+    });
+    console.log("❌ Socket disconnected");
   });
 
   socket.on("message", (message) => {
@@ -38,10 +68,13 @@ io.on("connection", (socket) => {
       receiver: message.receiver.username
     });
   });
-    socket.on('typing', (data) => {
-  console.log("User is typing:", data);
-  io.to(data.room).emit('userTyping', { sender: data.sender, receiver:data.receiver });
-});
+  socket.on('typing', (data) => {
+    console.log("User is typing:", data);
+    io.to(data.room).emit('userTyping', { sender: data.sender, receiver: data.receiver });
+
+  });
+
+
 });
 
 

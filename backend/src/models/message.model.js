@@ -21,6 +21,16 @@ const MessageSchema = new mongoose.Schema(
       enum: ["text", "image", "file"],
       default: "text",
     },
+    unsend: {
+      type: Boolean,
+      default: false,
+    },
+  
+  deletedFor: [mongoose.Schema.Types.ObjectId],
+    deleteForEveryone: {
+      type: Boolean,
+      default: false,
+    },
     isRead: {
       type: Boolean,
       default: false,
