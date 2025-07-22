@@ -305,7 +305,9 @@ const ChatApp: React.FC<User> = ({ user }) => {
           value={messageText}
           onChange={(e) => {
             const roomId = [user?.username, selectedUser].sort().join('_');
-            emitTypingEvent(roomId, user?.username!, selectedUser);
+            if (user?.username && selectedUser) {
+              emitTypingEvent(roomId, user.username, selectedUser);
+            }
             setMessageText(e.target.value);
             listenForTyping({ user }, setTyping);
           }}
