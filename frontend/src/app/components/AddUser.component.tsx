@@ -36,45 +36,51 @@ const AddUserComponent = ({ setShowAddUser }: { setShowAddUser: Dispatch<SetStat
         }
     }
     return (
-        <div className=' w-full h-full text-black z-50 absolute  bg-gray-400 opacity-90 p-4 flex flex-col items-center space-y-4'>
-            <div className='w-70 h-60 sm:w-auto sm:h-auto bg-white flex flex-col justify-center items-center rounded-lg  relative p-4'>
-                <div className='absolute  right-2 top-1'>
-                    <button
-                        onClick={() => {
-                            setShowAddUser(false);
-                            setError('');
-                            setUser('');
-                        }}
-                        className='text-xl text-black hover:text-red-600 cursor-pointer'>
-                        &times;</button>
-                </div>
-                <div className='flex flex-col items-center justify-center space-y-4'>
-                    <h1 className='text-2xl font-bold text-black'>Add User</h1>
-                    <input type="text"
-                        value={user}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                submitHandler();
-                            }
-                        }}
-                        onChange={(e) => {
-                            setError('');
-                            setLoading(false);
-                            setUser(e.target.value);
-                        }}
-                        className="border rounded p-2 mr-2 text-black" placeholder="Type user name..." />
-                    <button
-                        onClick={submitHandler}
-                        disabled={loading}
-                        className="bg-blue-500 text-white cursor-pointer hover:bg-blue-400 rounded px-4 py-2">
-                        {loading ? "loading..." : "select"}
-                    </button>
-                    {
-                        error && <div className='text-red-500 text-sm'>{error}</div>
-                    }
-                </div>
-            </div>
-        </div>
+      <div className="fixed inset-0 z-50 bg-gray-700  flex items-center justify-center px-4">
+  <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 relative">
+    {/* Close Button */}
+    <button
+      onClick={() => {
+        setShowAddUser(false);
+        setError('');
+        setUser('');
+      }}
+      className="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-2xl cursor-pointer font-bold"
+      aria-label="Close"
+    >
+      &times;
+    </button>
+
+    {/* Content */}
+    <div className="flex flex-col items-center space-y-4">
+      <h2 className="text-2xl font-bold text-gray-800">Add User</h2>
+
+      <input
+        type="text"
+        value={user}
+        onKeyDown={(e) => e.key === 'Enter' && submitHandler()}
+        onChange={(e) => {
+          setError('');
+          setLoading(false);
+          setUser(e.target.value);
+        }}
+        placeholder="Enter username"
+        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
+      />
+
+      <button
+        onClick={submitHandler}
+        disabled={loading}
+        className="w-full bg-blue-600 text-white py-2 cursor-pointer rounded-lg hover:bg-blue-500 transition"
+      >
+        {loading ? 'Loading...' : 'Select'}
+      </button>
+
+      {error && <p className="text-sm text-red-500">{error}</p>}
+    </div>
+  </div>
+</div>
+
     )
 }
 

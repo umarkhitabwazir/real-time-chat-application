@@ -25,24 +25,45 @@ const ProfileComponent: React.FC<User> = ({ user }) => {
         }
     }
     return (
-        <div className='absolute right-0 top-11   z-50' >
-            <div className='   p-4 w-45 rounded-b-md bg-gray-800 text-white'>
-                <div className=' flex flex-col items-center justify-start space-y-2'>
-                    <h1 className='text-2xl font-bold'>Profile</h1>
-                    <img src={user?.avatar || " /default-avatar.png"} alt={`${user?.username} profile`} className='rounded-full bg-cover object-cover w-10 h-10' />
-                    <span className='ml-2'>{user?.username}</span>
-                    <span className='ml-2 text-xs '>{user?.email}</span>
+      <div className="absolute right-4 top-14 z-50">
+  <div className="w-60 rounded-b-md bg-gray-800 text-white shadow-xl p-4">
+    <div className="flex flex-col items-center space-y-3">
 
-                    <button className='ml-2 w-full cursor-pointer hover:bg-red-400 bg-red-500 text-white px-2 py-1 rounded'
-                        onClick={loggedOut}>Logout</button>
-                    <button className='ml-2 w-full cursor-pointer hover:bg-blue-400 bg-blue-500 text-white px-2 py-1 rounded'>Settings</button>
-                    <button className='ml-2 w-full cursor-pointer hover:bg-green-400 bg-green-500 text-white px-2 py-1 rounded'>Profile</button>
-                </div>
+      <h1 className="text-xl font-semibold">Profile</h1>
 
+      <img
+        src={user?.avatar || "/default-avatar.png"}
+        alt={`${user?.username}'s profile`}
+        className="w-12 h-12 rounded-full object-cover ring-2 ring-blue-500"
+      />
 
+      <span className="text-base font-medium">{user?.username}</span>
 
-            </div>
-        </div>
+      <span
+        title={user?.email}
+        className="text-xs text-gray-300 max-w-[150px] truncate"
+      >
+        {user?.email}
+      </span>
+
+      <button
+        onClick={loggedOut}
+        className="w-full bg-red-500 cursor-pointer hover:bg-red-400 text-white py-1 rounded text-sm transition duration-150"
+      >
+        Logout
+      </button>
+
+      {/* <button disabled className="w-full bg-blue-500 cursor-pointer hover:bg-blue-400 text-white py-1 rounded text-sm transition duration-150">
+        Settings
+      </button>
+
+      <button className="w-full bg-green-500 cursor-pointer hover:bg-green-400 text-white py-1 rounded text-sm transition duration-150">
+        Profile
+      </button> */}
+    </div>
+  </div>
+</div>
+
     )
 }
 
