@@ -123,7 +123,7 @@ const LoginComponent = () => {
 
     <div className="text-center">
       <Link href="/api/register" className="text-indigo-600 hover:underline text-sm">
-        Don't have an account? Register
+       Don&apos;t have an account? Register
       </Link>
     </div>
 
