@@ -4,7 +4,8 @@ export interface Message {
   receiver: {_id:string, username: string, avatar?: string };
    deleteForEveryone?: boolean;
     deleteForMe?: boolean;
-  content: string;
+  content?: string;
+  image?: string;
   unsend?: boolean;
   createdAt?: Date
 

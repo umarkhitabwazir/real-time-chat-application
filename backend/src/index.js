@@ -21,14 +21,12 @@ io.on("connection", (socket) => {
   socket.on("join", (username) => {
     const cleanUsername = username.split("_")[0]
     socket.username = cleanUsername;
-    console.log("Socket connected:", socket.username);
 
     onlineUsers.set(cleanUsername, socket.id);
 
 
     socket.join(username); // Join room with username
     if (onlineUsers.size > 0) {
-      console.log("onlineUsers",);
 
       io.emit("userStatus", {
         onlineUsers: Array.from(onlineUsers.keys()),
@@ -39,7 +37,6 @@ io.on("connection", (socket) => {
 
 
 
-    console.log(` ${cleanUsername} joined their personal room`);
 
   });
 
@@ -53,7 +50,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (message) => {
-    console.log("Received message from frontend:", message);
 
     io.emit("backend-message", message);
     socket.emit('message', message);
@@ -69,7 +65,6 @@ io.on("connection", (socket) => {
     });
   });
   socket.on('typing', (data) => {
-    console.log("User is typing:", data);
     io.to(data.room).emit('userTyping', { sender: data.sender, receiver: data.receiver });
 
   });

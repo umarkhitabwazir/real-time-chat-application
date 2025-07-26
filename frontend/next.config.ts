@@ -4,12 +4,17 @@ const nextConfig: import('next').NextConfig = {
    images: {
   remotePatterns:[
     {
-      protocol: 'http',
+      protocol: 'https',
       hostname: 'res.cloudinary.com',
       port: '',
       pathname: '/dl5t2l1sc/image/upload/**',
       search: '',
     },
+       {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '/**', 
+      }
   ]
   },
   async rewrites() {

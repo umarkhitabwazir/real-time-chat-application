@@ -1,26 +1,14 @@
-import { User } from "../models/user.model.js";
+import { User } from "../models/User.model.js";
 import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
+import generateAccessAndRefereshTokens from "../utils/generateAccessToken.utils.js";
 import dotenv from "dotenv";
 dotenv.config({
     path: ".env"
 });
 
-const generateAccessAndRefereshTokens = async (user) => {
-    try {
-        const accessToken = await user.generateAccessToken();
-        const refreshToken = await user.generateRefreshToken();
-        user.refreshToken = refreshToken;
-        await user.save({ validateBeforeSave: false });
-        return { accessToken, refreshToken };
-    } catch (error) {
-        console.error("Error generating access token:", error);
-        throw new Error("Token generation failed");
 
-    }
-
-}
 
 const longinUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
@@ -33,8 +21,13 @@ const longinUser = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(404, "User not found");
     }
+    if (user.googleId!=='') {
+       throw new ApiError(401, "This user can only log in using Google");
+
+        
+    }
     const plainPass = password;
-    const isMatch = await user.comparePassword(plainPass);
+    let isMatch = await user.comparePassword(plainPass);
 
     if (!isMatch) {
         throw new ApiError(401, "Invalid credentials");
@@ -55,6 +48,7 @@ const longinUser = asyncHandler(async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
 
     }
+    
     res.
         cookie("refreshToken", refreshToken, options).
         cookie("accessToken", accessToken, options).

@@ -9,11 +9,24 @@ dotenv.config({
 
 const UserSchema = mongoose.Schema(
     {
+        googleId: {
+            type: String,
+            unique: true,
+            default: '',
+        },
         username: {
             type: String,
-            required: true,
-            unique: true,
+            required: function () {
+                return !this.googleId;
+            },
+            unique: function () {
+                return !this.googleId;
+            },
             trim: true,
+        },
+        name: {
+            type: String,
+            default: ''
         },
         email: {
             type: String,
@@ -24,7 +37,9 @@ const UserSchema = mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
+            required: function () {
+                return !this.googleId;
+            },
         },
         avatar: {
             type: String,
@@ -59,7 +74,7 @@ UserSchema.pre("save", async function (next) {
 })
 
 UserSchema.methods.comparePassword = async function (plainPass) {
-   return await bcrypt.compare(plainPass, this.password)
+    return await bcrypt.compare(plainPass, this.password)
 }
 
 UserSchema.methods.generateAccessToken = async function () {
@@ -70,10 +85,10 @@ UserSchema.methods.generateAccessToken = async function () {
     )
 }
 
-UserSchema.methods.generateRefreshToken =async function(){
-    return jwt.sign({id:this._id},
+UserSchema.methods.generateRefreshToken = async function () {
+    return jwt.sign({ id: this._id },
         process.env.JWT_REFRESH_TOKEN_SECRET,
-        {expiresIn:process.env.JWT_REFRESH_TOKEN_EXPIRES_IN})
+        { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN })
 }
 
-export  const User = mongoose.model('User', UserSchema)
+export const User = mongoose.models.User || mongoose.model('User', UserSchema); 

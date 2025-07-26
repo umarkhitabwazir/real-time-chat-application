@@ -37,7 +37,7 @@ const Header: React.FC<User> = ({ user }) => {
         <Image
           onClick={() => setShowProfile((prev) => !prev)}
           title="Profile"
-          src="/default-avatar.png"
+          src={user.avatar || "/default-avatar.png"}
           className="w-8 h-8 rounded-full cursor-pointer object-cover border-2 border-gray-300 hover:border-white transition"
           width={30}
           height={30}
@@ -77,7 +77,7 @@ const Header: React.FC<User> = ({ user }) => {
                 className="flex items-center space-x-2 px-3 py-2 rounded hover:bg-gray-700 cursor-pointer"
               >
                 <Image
-                  src="/default-avatar.png"
+                  src={user.avatar || '/default-avatar.png'}
                   title="Profile"
                   className="w-7 h-7 rounded-full object-cover"
                   width={30}

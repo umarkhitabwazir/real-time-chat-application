@@ -10,7 +10,6 @@ const middleWare = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET);
-console.log("decoded", decoded);
         req.user = decoded;
         req.token=accessToken;
         next();

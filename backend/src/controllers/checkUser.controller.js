@@ -1,5 +1,5 @@
 import {asyncHandler} from '../utils/AsyncHandler.js';
-import {User} from '../models/user.model.js';
+import {User} from '../models/User.model.js';
 import {ApiError} from '../utils/api-error.js';
 import {ApiResponse} from '../utils/api-response.js';
 const checkUser=asyncHandler(async (req, res) => {

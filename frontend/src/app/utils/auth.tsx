@@ -20,6 +20,7 @@ const Auth = <P extends User>(
         const fetchLoggedInUser = async () => {
             try {
                 const response = await axios.get(`${API}/logged-in-user`, { withCredentials: true });
+                // const response = await axios.get(`${API}/auth/login/success`, { withCredentials: true });
                 const data = response.data.data;
 
                 console.log("Logged in user data:", data);
