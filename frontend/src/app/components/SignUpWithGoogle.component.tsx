@@ -3,8 +3,9 @@ import React from 'react'
 
 const SignUpWithGoogleComponent = () => {
   const API = process.env.NEXT_PUBLIC_API_URL
+  
   const router = useRouter()
-  const signup = async () => {
+  const signup = () => {
     router.push(`${API}/auth/google`);
   }
   return (

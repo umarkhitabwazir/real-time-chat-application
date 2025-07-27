@@ -1,9 +1,12 @@
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 const LoginUpWithGoogleComponent = () => {
-    const signin = () => {
-       alert('Service is temporarily unavailable. Please try again later.');
+  const router=useRouter()
+  const API = process.env.NEXT_PUBLIC_API_URL
 
+    const signin = () => {
+    router.push(`${API}/auth/google`);
     }
   return (
   <div className="flex justify-center items-center mt-4">

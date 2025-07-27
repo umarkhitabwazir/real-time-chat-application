@@ -5,10 +5,12 @@ import { User } from "../models/User.model.js";
 
 const signUpController = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body
+    
     if (!username || !email || !password) {
         throw new ApiError(501, "all field are required")
 
     }
+    const removeWhiteSpaceFromUsername=username.toLowerCase().replace(/\s+/g, '')
     const existingUserWithEmail = await User.findOne({
         email
     })
@@ -18,7 +20,7 @@ const signUpController = asyncHandler(async (req, res) => {
         throw new ApiError(409, "user exist with the provided email!")
     }
     const existingUserWithUsername = await User.findOne({
-        username
+       removeWhiteSpaceFromUsername
     })
     if (existingUserWithUsername) {
         throw new ApiError(409, "user exist with the provided username!")

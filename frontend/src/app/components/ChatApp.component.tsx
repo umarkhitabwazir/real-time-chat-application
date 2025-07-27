@@ -32,6 +32,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [zoomImage, setZoomImage] = useState<string | null>(null);
   const [openCamera, setOpenCamera] = useState<boolean>(false);
+  const [name,setName]=useState<string>('')
   const searchParams = useSearchParams();
   const selectedUser = searchParams.get('user') || '';
   const API = process.env.NEXT_PUBLIC_API_URL!;
@@ -245,6 +246,8 @@ const ChatApp: React.FC<User> = ({ user }) => {
         ) : (
           <ul className="space-y-1 select-none">
             {participants.map((name) => (
+              <>
+              {/* {setName(name)} */}
               <li
                 key={name}
                 className={`p-3 rounded-lg cursor-pointer transition-all ${selectedUser === name ? 'bg-indigo-50 border border-indigo-100' : 'hover:bg-gray-50'}`}
@@ -252,7 +255,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
                   setMessageText('');
                   router.push(`/api/chat?user=${name}`);
                 }}
-              >
+                >
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <div className="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10" >
@@ -262,7 +265,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
                         className="w-10 h-10 rounded-full object-cover"
                         width={40}
                         height={40}
-                      />
+                        />
                     </div>
                     <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${onlineStatus?.includes(name) ? 'bg-green-500' : 'bg-gray-400'}`} />
                   </div>
@@ -272,13 +275,14 @@ const ChatApp: React.FC<User> = ({ user }) => {
                       <span className="text-xs text-gray-500">12:30 PM</span>
                     </div>
                     {typing && selectedUser === name ? (
-                      <span className="text-xs text-indigo-500 animate-pulse">Typing...</span>
+                      <span className="text-xs text-indigo-500 relative animate-pulse">Typing...</span>
                     ) : (
                       <p className="text-xs text-gray-500 truncate">Last message preview...</p>
                     )}
                   </div>
                 </div>
               </li>
+                    </>
             ))}
           </ul>
         )}
@@ -300,13 +304,21 @@ const ChatApp: React.FC<User> = ({ user }) => {
                     height={48}
                   />
                 </div>
-                <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${onlineStatus?.includes(selectedUser) ? 'bg-green-500' : 'bg-gray-400'}`} />
+                <div
+                 className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white 
+                  ${onlineStatus?.includes(selectedUser) ?
+                   'bg-green-500' : 'bg-gray-400'}`} />
               </div>
               <div>
                 <h2 className="font-semibold text-gray-900">{selectedUser}</h2>
                 <p className="text-xs text-gray-500">
                   {onlineStatus?.includes(selectedUser) ? 'Online' : 'Offline'}
                 </p>
+                    {typing && selectedUser  ? (
+                      <span className="text-xs text-indigo-500 relative animate-pulse">Typing...</span>
+                    ) : (
+                      <span className="text-xs text-gray-500 truncate">Last message preview...</span>
+                    )}
               </div>
             </div>
           ) : (

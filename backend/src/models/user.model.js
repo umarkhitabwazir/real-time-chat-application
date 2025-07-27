@@ -65,6 +65,13 @@ const UserSchema = mongoose.Schema(
     },
     { timestamps: true }
 )
+UserSchema.pre('save', function (next) {
+    if (this.username) {
+        this.username = this.username.toLowerCase().replace(/\s+/g, '');
+    }
+    next();
+});
+
 
 UserSchema.pre("save", async function (next) {
     const user = this

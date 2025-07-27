@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { User } from '../interfaces/user.interface'
 import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
@@ -9,16 +9,20 @@ const ProfileComponent: React.FC<User> = ({ user }) => {
   const router = useRouter()
   const API = process.env.NEXT_PUBLIC_API_URL
   const [previewImage, setPreviewImage] = React.useState<string | null>(null)
+  const [loading,setLoading]=useState<boolean>(false)
 
 
   const loggedOut = async () => {
+    setLoading(true)
     try {
       await axios.get(`${API}/loggedOut`, { withCredentials: true });
+      setLoading(false)
       router.push('/api/login')
 
 
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
+      setLoading(false)
 
         router.push(`/api/login?redirectTo=${encodeURIComponent(window.location.href)}`);
       }
@@ -93,9 +97,9 @@ const ProfileComponent: React.FC<User> = ({ user }) => {
 
           <button
             onClick={loggedOut}
-            className="w-full bg-red-500 cursor-pointer hover:bg-red-400 text-white py-1 rounded text-sm transition duration-150"
+            className={`${loading?'bg-red-400':'bg-red-500'} w-full  cursor-pointer hover:bg-red-400 text-white py-1 rounded text-sm transition duration-150`}
           >
-            Logout
+            {loading? 'Loading...' : "Logout"}
           </button>
 
           {/* <button disabled className="w-full bg-blue-500 cursor-pointer hover:bg-blue-400 text-white py-1 rounded text-sm transition duration-150">

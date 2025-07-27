@@ -14,7 +14,11 @@ passport.use(
         async (accessToken, refreshToken, profile, done) => {
             try {
                 let user = await User.findOne({ googleId: profile.id });
+                if (user) {
+                    console.log('user exist', user)
+                    return done(null, user)
 
+                }
                 const existUserWithEmail = await User.findOne({ email: profile.emails[0].value });
 
 
@@ -22,13 +26,22 @@ passport.use(
                     alart('error')
                     throw new ApiError(401, 'user already exist with this email')
                 }
+                let baseUsername = profile.displayName.toLowerCase().replace(/\s+/g, '');
+                let finalUsername = baseUsername;
+                let counter = 0;
+
+                while (await User.findOne({ username: finalUsername })) {
+                    counter++;
+                    finalUsername = `${baseUsername}${counter}`;
+                }
+
 
                 if (!user) {
                     // New signup
                     user = await User.create({
                         googleId: profile.id,
                         email: profile.emails[0].value,
-                        username: profile.displayName,
+                        username: finalUsername,
                         avatar: profile.photos[0].value,
 
                     });
@@ -43,7 +56,7 @@ passport.use(
         }
     )
 )
-passport.serializeUser(async(user, done) => {
+passport.serializeUser(async (user, done) => {
     done(null, user._id)
 })
 passport.deserializeUser(async (id, done) => {
