@@ -32,7 +32,6 @@ const ChatApp: React.FC<User> = ({ user }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [zoomImage, setZoomImage] = useState<string | null>(null);
   const [openCamera, setOpenCamera] = useState<boolean>(false);
-  const [name,setName]=useState<string>('')
   const searchParams = useSearchParams();
   const selectedUser = searchParams.get('user') || '';
   const API = process.env.NEXT_PUBLIC_API_URL!;
@@ -247,7 +246,6 @@ const ChatApp: React.FC<User> = ({ user }) => {
           <ul className="space-y-1 select-none">
             {participants.map((name) => (
               <>
-              {/* {setName(name)} */}
               <li
                 key={name}
                 className={`p-3 rounded-lg cursor-pointer transition-all ${selectedUser === name ? 'bg-indigo-50 border border-indigo-100' : 'hover:bg-gray-50'}`}
