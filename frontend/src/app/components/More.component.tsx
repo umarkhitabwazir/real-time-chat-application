@@ -65,56 +65,53 @@ setLoading('')
   return (
     <>{showComponent&&
     
- <div
-  className={`z-70 bg-black/30 backdrop-blur-sm flex items-center justify-center px-4`}
->
+ <div className="z-70 fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center px-4">
+  <div className="bg-white rounded-xl shadow-2xl max-w-xs w-full p-6 relative space-y-4">
+    {/* Title */}
+    <h2 className="text-lg font-semibold text-gray-800">Message Options</h2>
+    <p className="text-gray-400 text-sm line-through">
+      {!message.deleteForEveryone && !message.deleteForMe && message.content}
+    </p>
 
-    <div className="bg-white rounded-xl shadow-2xl w-full max-w-xs p-6 relative space-y-4">
-      {/* Title */}
-      <h2 className="text-lg font-semibold text-gray-800">Message Options</h2>
-      <p className='text-gray-400 text-sm line-through'>{!message.deleteForEveryone && !message.deleteForMe && message.content}</p>
+    <button
+      onClick={() => setShowDelete((prev) => !prev)}
+      className="w-full py-2 bg-green-600 text-white cursor-pointer rounded-md hover:bg-green-500 transition"
+    >
+      Delete
+    </button>
 
-      {/* Delete Main Button */}
-      <button
-        onClick={() => setShowDelete((prev) => !prev)}
-        className="w-full py-2 bg-green-600 text-white cursor-pointer rounded-md hover:bg-green-500 transition"
-      >
-        Delete
-      </button>
+    {showDelete && (
+      <div className="space-y-2">
+        <button
+          onClick={deleteForMeHandler}
+          className="w-full py-2 bg-red-500 text-white cursor-pointer rounded-md hover:bg-red-400 transition"
+        >
+          {loading === "forMe" ? "Loading..." : "Delete for Me"}
+        </button>
 
-      {/* Conditional Sub Options */}
-      {showDelete && (
-        <div className="space-y-2">
+        {message.sender.username === currentUserName && !message.deleteForEveryone && (
           <button
-            onClick={deleteForMeHandler}
-            className="w-full py-2 bg-red-500 text-white rounded-md hover:bg-red-400 cursor-pointer transition"
+            onClick={deleteForEveryOneHandler}
+            className="w-full py-2 bg-red-500 cursor-pointer text-white rounded-md hover:bg-red-400 transition"
           >
-            {loading==='forMe'?"Loading...":'Delete for Me'}
+            {loading === "everyone" ? "Loading..." : "Delete for Everyone"}
           </button>
+        )}
+      </div>
+    )}
 
-          {message.sender.username === currentUserName && !message.deleteForEveryone && (
-            <button
-              onClick={deleteForEveryOneHandler}
-              className="w-full py-2 bg-red-500 text-white rounded-md hover:bg-red-400 cursor-pointer transition"
-            >
-              {loading==='everyone'?"Loading...":"Delete for Everyone"}
-            </button>
-          )}
-        </div>
-      )}
-
-      <button
-        onClick={() => {
-          setShowComponent(false);
-          setShowDelete(false);
-        }}
-        className="absolute top-2 right-2 text-xl text-gray-500 cursor-pointer   hover:text-red-600"
-        aria-label="Close"
-      >
-        &times;
-      </button>
-    </div>
+    <button
+      onClick={() => {
+        setShowComponent(false);
+        setShowDelete(false);
+      }}
+      className="absolute cursor-pointer top-2 right-2 text-xl text-gray-500 hover:text-red-600"
+    >
+      &times;
+    </button>
   </div>
+</div>
+
     }    
 
     </>

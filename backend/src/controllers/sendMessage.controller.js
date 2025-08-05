@@ -16,7 +16,7 @@ if (base64) {
     cameraCaptureBuffer=Buffer.from(base64, 'base64')
 }
     const fileBuffer = req.file?.buffer
-    console.log('File buffer:', fileBuffer);
+   
 
     let uploadFile
     if (fileBuffer) {

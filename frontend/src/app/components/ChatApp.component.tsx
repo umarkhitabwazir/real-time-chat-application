@@ -412,7 +412,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
                     </svg>
                   </button>
                   {showMore === idx && (
-                    <div className="absolute mt-1 z-10">
+                    <div className="inset-0 mt-1 z-10">
                       <MoreComponent currentUserName={user?.username ?? null} message={msg} fetchMessages={fetchMessages} />
                     </div>
                   )}

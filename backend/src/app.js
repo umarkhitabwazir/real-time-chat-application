@@ -26,10 +26,10 @@ app.use(cors({
 }))
 app.use(
     session({
-        secret: process.env.GOOGLE_CLIENT_SECRET, // use a strong secret in production
+        secret: process.env.GOOGLE_CLIENT_SECRET, 
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: true }, // use true if HTTPS
+        cookie: { secure: process.env.NODE_ENV==='production' }, 
     })
 );
 app.use(passport.initialize())
