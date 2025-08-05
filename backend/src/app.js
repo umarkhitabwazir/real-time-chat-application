@@ -26,7 +26,7 @@ app.use(cors({
 }))
 app.use(
     session({
-        secret: process.env.client_secret, // use a strong secret in production
+        secret: process.env.GOOGLE_CLIENT_SECRET, // use a strong secret in production
         resave: false,
         saveUninitialized: true,
         cookie: { secure: true }, // use true if HTTPS

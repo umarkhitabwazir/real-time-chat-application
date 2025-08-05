@@ -6,8 +6,8 @@ import { ApiError } from './utils/api-error.js';
 passport.use(
     new GoogleStrategy(
         {
-            clientID: process.env.client_id,
-            clientSecret: process.env.client_secret,
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: `/api/auth/google/callback`,
             scope: ['profile', 'email'],
         },

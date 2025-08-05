@@ -245,7 +245,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
         ) : (
           <ul className="space-y-1 select-none">
             {participants.map((name) => (
-              <>
+              <React.Fragment key={name}>
               <li
                 key={name}
                 className={`p-3 rounded-lg cursor-pointer transition-all ${selectedUser === name ? 'bg-indigo-50 border border-indigo-100' : 'hover:bg-gray-50'}`}
@@ -280,7 +280,7 @@ const ChatApp: React.FC<User> = ({ user }) => {
                   </div>
                 </div>
               </li>
-                    </>
+                    </React.Fragment>
             ))}
           </ul>
         )}
