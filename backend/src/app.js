@@ -10,6 +10,7 @@ import fetchAllMessageRoute from "./routes/fetchAllMessage.route.js"
 import getLoggedInUserRoute from "./routes/getLoggedinUser.route.js"
 import checkUserRoute from "./routes/checkUser.route.js"
 import passport from "passport"
+import MongoStore from "connect-mongo"
 import "./passport.js"
 import { loggedOutRouter } from "./routes/loggedOut.route.js";
 import deleteMessageForEveryOneRoute from "./routes/deleteMessageForEveryOne.route.js"
@@ -26,10 +27,19 @@ app.use(cors({
 }))
 app.use(
     session({
-        secret: process.env.GOOGLE_CLIENT_SECRET, 
+        secret: process.env.SESSION_SECRET, 
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: process.env.NODE_ENV==='production' }, 
+        store: MongoStore.create({
+            mongoUrl: process.env.DB_URL,
+            collectionName: "sessions",
+    }),
+        cookie: { 
+            secure: process.env.NODE_ENV==='production',
+            httpOnly: true,
+             sameSite: "lax",
+             
+            }, 
     })
 );
 app.use(passport.initialize())
